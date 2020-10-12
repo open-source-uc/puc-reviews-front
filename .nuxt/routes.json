@@ -1,0 +1,37 @@
+[
+  {
+    "name": "course_reviews",
+    "path": "/course_reviews",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/course_reviews.vue",
+    "chunkName": "pages/course_reviews",
+    "_name": "_2dabf920"
+  },
+  {
+    "name": "courses",
+    "path": "/courses",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/courses.vue",
+    "chunkName": "pages/courses",
+    "_name": "_4dd1dd42"
+  },
+  {
+    "name": "teacher_reviews",
+    "path": "/teacher_reviews",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/teacher_reviews.vue",
+    "chunkName": "pages/teacher_reviews",
+    "_name": "_12c5e065"
+  },
+  {
+    "name": "teachers",
+    "path": "/teachers",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/teachers.vue",
+    "chunkName": "pages/teachers",
+    "_name": "_7d9ac48c"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_f4951d8e"
+  }
+]
