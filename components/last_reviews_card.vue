@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app>
     <review_card></review_card>
-  </div>
+  </v-app>
 </template>
 
 <script>

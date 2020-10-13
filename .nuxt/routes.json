@@ -14,6 +14,13 @@
     "_name": "_4dd1dd42"
   },
   {
+    "name": "sign_up",
+    "path": "/sign_up",
+    "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/sign_up.vue",
+    "chunkName": "pages/sign_up",
+    "_name": "_a8e518f8"
+  },
+  {
     "name": "teacher_reviews",
     "path": "/teacher_reviews",
     "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/teacher_reviews.vue",

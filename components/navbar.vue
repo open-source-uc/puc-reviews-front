@@ -1,50 +1,67 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="dark">
-    <b-navbar-brand><NuxtLink to="/">{{main_title}}</NuxtLink></b-navbar-brand>
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand><NuxtLink to="/"><v-icon>mdi-star</v-icon></NuxtLink></b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item><NuxtLink to="/fun">Fun</NuxtLink></b-nav-item>
-        <b-nav-item href="#" disabled>Disabled</b-nav-item>
-      </b-navbar-nav>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item><NuxtLink to="/teacher_reviews">Reseñas Profes</NuxtLink></b-nav-item>
+          <b-nav-item><NuxtLink to="/course_reviews">Reseñas Ramos</NuxtLink></b-nav-item>
+            <b-nav-item-dropdown text="Explorar">
+              <b-dropdown-item><NuxtLink to="/teachers">Profesores</NuxtLink></b-dropdown-item>
+              <b-dropdown-item><NuxtLink to="/courses">Cursos</NuxtLink></b-dropdown-item>
+            </b-nav-item-dropdown>
+        </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-        </b-nav-form>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav v-if="$auth.loggedIn" class="ml-auto">
+            <b-nav-item>
+              <button class="btn btn-success">
+                <v-icon dark>mdi-plus</v-icon> Reseña
+              </button>
+            </b-nav-item>
 
-        <b-nav-item-dropdown text="Lang" right>
-          <b-dropdown-item href="#">EN</b-dropdown-item>
-          <b-dropdown-item href="#">ES</b-dropdown-item>
-          <b-dropdown-item href="#">RU</b-dropdown-item>
-          <b-dropdown-item href="#">FA</b-dropdown-item>
-        </b-nav-item-dropdown>
+            <b-nav-item-dropdown :text="$auth.user.name" right>
+            <!-- Using 'button-content' slot -->
+            <b-dropdown-item href="#">Perfil</b-dropdown-item>
+            <b-dropdown-item @click="logOut()">Cerrar Sesión</b-dropdown-item>
+            </b-nav-item-dropdown>
+        </b-navbar-nav>
 
-        <b-nav-item-dropdown right>
-          <!-- Using 'button-content' slot -->
-          <template v-slot:button-content>
-            <em>User</em>
-          </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+        <b-navbar-nav v-else class="ml-auto">
+            <b-nav-item><NuxtLink to="/sign_up"><button class="btn btn-success">Registrarse</button></NuxtLink></b-nav-item>
+            <b-nav-item><NuxtLink to="/"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+  </div>
 </template>
 
 <script>
+import new_review_form from "@/components/new_review_form.vue"
 export default {
-  props: ['main_title'],
+  components: {
+    new_review_form
+  },
+  props: {
+		user: {
+			type: Object,
+			required: false,
+			default: () => ({ name: "Nombre de Usuario" }),
+		},
+	},
   data: function(){
     return{
-
     }
   },
+  methods: {
+    logOut(){
+      this.$auth.logout()
+      this.$notifier.showMessage({ content: 'Sesión Cerrada', color: 'info' })
+    }
+  }
 }
 </script>
 
