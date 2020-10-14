@@ -1,24 +1,21 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand><NuxtLink to="/"><v-icon>mdi-star</v-icon></NuxtLink></b-navbar-brand>
+      <b-navbar-brand to="/"><v-icon>mdi-star</v-icon>PUC</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item><NuxtLink to="/teacher_reviews">Reseñas Profes</NuxtLink></b-nav-item>
-          <b-nav-item><NuxtLink to="/course_reviews">Reseñas Ramos</NuxtLink></b-nav-item>
-            <b-nav-item-dropdown text="Explorar">
-              <b-dropdown-item><NuxtLink to="/teachers">Profesores</NuxtLink></b-dropdown-item>
-              <b-dropdown-item><NuxtLink to="/courses">Cursos</NuxtLink></b-dropdown-item>
-            </b-nav-item-dropdown>
+          <b-nav-item to="/teachers"><v-icon>mdi-human-greeting</v-icon>Profesores</b-nav-item>
+          <b-nav-item to="/courses"><v-icon>mdi-pencil</v-icon>Ramos</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
+        <!-- IF LOGGED IN  -->
         <b-navbar-nav v-if="$auth.loggedIn" class="ml-auto">
             <b-nav-item>
-              <button class="btn btn-success">
+              <button class="btn btn-success" @click="dialog = ! dialog">
                 <v-icon dark>mdi-plus</v-icon> Reseña
               </button>
             </b-nav-item>
@@ -29,13 +26,20 @@
             <b-dropdown-item @click="logOut()">Cerrar Sesión</b-dropdown-item>
             </b-nav-item-dropdown>
         </b-navbar-nav>
-
+        <!-- IF NOT LOGGED IN  -->
         <b-navbar-nav v-else class="ml-auto">
             <b-nav-item><NuxtLink to="/sign_up"><button class="btn btn-success">Registrarse</button></NuxtLink></b-nav-item>
             <b-nav-item><NuxtLink to="/"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+
+      <new_review_form></new_review_form>
+    </v-dialog>
   </div>
 </template>
 
@@ -54,11 +58,12 @@ export default {
 	},
   data: function(){
     return{
+      dialog: false
     }
   },
   methods: {
-    logOut(){
-      this.$auth.logout()
+    async logOut(){
+      await this.$auth.logout()
       this.$notifier.showMessage({ content: 'Sesión Cerrada', color: 'info' })
     }
   }

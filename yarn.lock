@@ -7713,6 +7713,16 @@ vue-router@^3.4.3:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.4.6.tgz#f7bda2c9a43d39837621c9a02ba7789f5daa24b2"
   integrity sha512-kaXnB3pfFxhAJl/Mp+XG1HJMyFqrL/xPqV7oXlpXn4AwMmm6VNgf0nllW8ksflmZANfI4kdo0bVn/FYSsAolPQ==
 
+vue-search-select@^2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/vue-search-select/-/vue-search-select-2.9.3.tgz#39ee37da95179b7fdd8e1cb7636e5c0aaee39be2"
+  integrity sha512-JQBTSKKX3nAoeeEaSqg2iQDtR1YBs0qZ08os/QDOqFocGPSvAffNb4VajSnlFWJlKQDJcev3iQuBLcWM2pxr0Q==
+
+vue-select@^3.10.8:
+  version "3.10.8"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.8.tgz#5d0839cba228a9a5efa1a88e5436840eb3fd0c7a"
+  integrity sha512-PnjtZWCTiSr04bs8ctPIiU41qnBK+oh/SOe6Pb4gElMMxofDFwUxiUe++mz0+84aTy4zrleGxtvVVyWbiPYBiw==
+
 vue-server-renderer@^2.6.12:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.6.12.tgz#a8cb9c49439ef205293cb41c35d0d2b0541653a5"

@@ -4,6 +4,7 @@
       <v-col>
         <v-card
         class="mx-auto mt-6 text-align-center pa-6"
+        :style="$auth.loggedIn ? 'left: 50%;' : null"
         max-width="600">
           <h2>Últimas Reseñas</h2>
           <last_reviews_card></last_reviews_card>
@@ -11,12 +12,6 @@
       </v-col>
       <v-col>
         <sign_in_form v-if="!$auth.loggedIn"></sign_in_form>
-        <v-card v-else
-        class="mx-auto mt-6 text-align-center pa-6"
-        max-width="600">
-          <h2>Últimas Reseñas</h2>
-          <last_reviews_card></last_reviews_card>
-        </v-card>
       </v-col>
     </v-row>
   </v-app>

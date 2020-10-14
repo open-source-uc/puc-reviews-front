@@ -25,6 +25,7 @@
                 v-model="userInfo.student_number"
                 :rules="requiredField"
                 :counter="15"
+                type="number"
                 label="Numero de estudiante"
                 required
               ></v-text-field>
@@ -71,10 +72,18 @@
             <v-col>
               <v-btn
               :disabled="!valid"
-              class="mr-4 btn-success"
+              class="mr-4"
+              color="success"
               @click="registerUser(userInfo)"
               >
               Registrarse
+              </v-btn>
+              <v-btn
+              to="/"
+              class="mr-4"
+              color="red"
+              >
+              Cancelar
             </v-btn>
             </v-col>
           </v-row>

@@ -5,6 +5,7 @@ import './middleware'
 // Active schemes
 import scheme_003d9a64 from './schemes/local.js'
 import scheme_d8eaa1ee from './schemes/customScheme.js'
+import scheme_23514a38 from './schemes/oauth2.js'
 
 export default function (ctx, inject) {
   // Options
@@ -18,7 +19,10 @@ export default function (ctx, inject) {
   $auth.registerStrategy('local', new scheme_003d9a64($auth, {"endpoints":{"login":{"url":"/api/auth/login","method":"post","propertyName":"token"},"logout":{"url":"/api/auth/logout","method":"post"},"user":{"url":"/api/auth/user","method":"get","propertyName":"user"}},"_name":"local"}))
 
   // customStrategy
-  $auth.registerStrategy('customStrategy', new scheme_d8eaa1ee($auth, {"endpoints":{"login":{"url":"http://localhost:3000/api/v1/auth/sign_in","method":"post","propertyName":"access-token"},"logout":{"url":"http://localhost:3000/api/v1/auth/sign_out","method":"post"},"user":{"url":"http://localhost:3000/api/v1/auth/validate_token","method":"get","propertyName":"data"}},"tokenRequired":true,"_name":"customStrategy"}))
+  $auth.registerStrategy('customStrategy', new scheme_d8eaa1ee($auth, {"endpoints":{"login":{"url":"/api/v1/auth/sign_in","method":"post","propertyName":"access-token"},"logout":{"url":"/api/v1/auth/sign_out","method":"delete"},"user":{"url":"/api/v1/auth/validate_token","method":"get","propertyName":"data"}},"tokenRequired":true,"_name":"customStrategy"}))
+
+  // google
+  $auth.registerStrategy('google', new scheme_23514a38($auth, {"client_id":"867429787247-ct516vku7u7d6n9qkmhu6hoel936gi27.apps.googleusercontent.com","_name":"google","authorization_endpoint":"https://accounts.google.com/o/oauth2/auth","userinfo_endpoint":"https://www.googleapis.com/oauth2/v3/userinfo","scope":["openid","profile","email"]}))
 
   // Inject it to nuxt context as $auth
   inject('auth', $auth)

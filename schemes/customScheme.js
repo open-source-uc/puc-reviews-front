@@ -1,7 +1,8 @@
 import LocalScheme from '@nuxtjs/auth/lib/schemes/local'
 
 export default class CustomScheme extends LocalScheme {
-  // Override `login` method of `local` scheme
+  // Override `login` method of `local` schemeç
+
   async login (endpoint) {
     if (!this.options.endpoints.login) {
       return
@@ -25,11 +26,12 @@ export default class CustomScheme extends LocalScheme {
       this._setToken(token)
     }
     let user = response.data.data
-    user.client = response.headers.client
-    user.uid = response.headers.uid
-    user['access-token'] = response.headers['access-token']
+    console.log(response)
+    // user["client"] = response.headers.client
+    // user["uid"] = response.headers.uid
+    // user["access-token"] = response.headers['access-token']
     if (this.options.autoFetchUser) {
-      await this.$auth.setUser(user)
+      this.fetchUser()
     }
 
     return response

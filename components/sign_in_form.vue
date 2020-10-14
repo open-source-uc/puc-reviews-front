@@ -30,15 +30,30 @@
             ></v-text-field>
           </v-col>
         </v-row>
-
         <v-row>
           <v-col>
             <v-btn
             :disabled="!valid"
-            class="mr-4 btn-success"
+            class="mr-4"
+            color="success"
             @click="loginUser(userInfo)"
             >
             Iniciar
+          </v-btn>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <v-btn
+            class="mr-4"
+            color="red"
+            @click="$auth.loginWith('google')"
+            >
+            Iniciar con
+             <v-icon class="ml-2">
+              mdi-google
+            </v-icon>
           </v-btn>
           </v-col>
         </v-row>
@@ -70,7 +85,7 @@
           let response = await this.$auth.loginWith('customStrategy', {
           data: userInfo
         })
-        this.$notifier.showMessage({ content: 'Bienvenido, ' + this.$auth.user.name, color: 'success' })
+        this.$notifier.showMessage({ content: '¡Bienvenido!', color: 'success' })
         } catch(error) {
           this.$notifier.showMessage({ content: 'Hubo un problema al iniciar sesión', color: 'red' })
         }
