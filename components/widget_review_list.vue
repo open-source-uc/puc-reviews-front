@@ -31,40 +31,6 @@ export default {
       default() {
         return []
       }
-      // default: [
-      //     {
-      //     id: 2,
-      //     user: {
-      //       id: 0,
-      //       name: "Person"
-      //     },
-      //     type: 'teacher',
-      //     teacher: {
-      //       name: "Nombre Profesor"
-      //     },
-      //     course: {
-      //       name: "Nombre Ramo"
-      //     },
-      //     rating: 6,
-      //     general_comment: "Me gustó"
-      //   },
-      //   {
-      //     id: 3,
-      //     user: {
-      //       id: 0,
-      //       name: "Person"
-      //     },
-      //     type: 'teacher',
-      //     teacher: {
-      //       name: "Nombre Profesor"
-      //     },
-      //     course: {
-      //       name: "Nombre Ramo"
-      //     },
-      //     rating: 6,
-      //     general_comment: "Me gustó"
-      //   },
-      // ]
     },
   }
 }

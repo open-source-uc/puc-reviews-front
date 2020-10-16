@@ -86,20 +86,8 @@ export default {
   props: {
     review: {
       type: Object,
-      default: {
-        user: {
-          id: 0,
-          name: "Person"
-        },
-        type: 'teacher',
-        teacher: {
-          name: "Nombre Profesor"
-        },
-        course: {
-          name: "Nombre Ramo"
-        },
-        rating: 6,
-        general_comment: "Me gustó"
+      default() {
+        return {}
       }
     }
   },

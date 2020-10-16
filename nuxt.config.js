@@ -5,7 +5,7 @@ export default {
   },
   ssr: false,
   head: {
-    title: 'Alf-NUXT',
+    title: 'Reseñas PUC',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -21,7 +21,6 @@ export default {
     transpile: ['@nuxtjs/auth']
   },
   buildModules: [
-      // Simple usage
       '@nuxtjs/vuetify',
       '@nuxtjs/auth',
       '@nuxtjs/axios',
@@ -44,7 +43,7 @@ export default {
       }
     },
     axios: {
-      baseURL: 'http://localhost:3000', // Used as fallback if no runtime config is provided
+      baseURL: process.env.API_URL || 'http://localhost:3000', // Used as fallback if no runtime config is provided
     },
     proxy: {
       '/api/v1': { target: 'http://localhost:3000', pathRewrite: {'^/api/v1': ''} }

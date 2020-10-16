@@ -119,7 +119,7 @@
     methods: {
       async registerUser(userInfo) {
         try {
-          await this.$axios.post('http://localhost:3000/api/v1/auth/', userInfo)
+          await this.$axios.post('/api/v1/auth/', userInfo)
           this.$auth.loginWith('customStrategy', {
             data: {
               email: userInfo.email,
