@@ -3,57 +3,111 @@
     class="mx-auto"
     color="#26c6da"
     dark
-    max-width="400"
+    width="400"
   >
     <v-card-title>
-      <v-icon
+      <template v-if="review.teacher == null">
+        <v-icon
         large
         left
-      >
-        mdi-twitter
+        >
+        mdi-notebook
       </v-icon>
-      <span class="title font-weight-light">Twitter</span>
+      <span class="title font-weight-light">{{review.course.name}}</span>
+      </template>
+
+      <template v-else>
+        <v-icon
+        large
+        left
+        >
+        mdi-human-greeting
+      </v-icon>
+      <span class="title font-weight-light">{{review.teacher.name}}</span>
+      </template>
+
     </v-card-title>
 
     <v-card-text class="headline font-weight-bold">
-      "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
+      <v-rating
+      color="white"
+      background-color="white"
+      v-model="review.rating"
+      style="text-align: center;"
+      readonly
+      length="7"
+      size="32"
+      >
+      </v-rating>
+      <h6 class="mt-2" v-if="review.teacher != null "> <v-icon>mdi-notebook</v-icon> Ramo: {{review.course.name}}</h6>
+      <v-divider></v-divider>
+      {{ review.general_comment }}
     </v-card-text>
 
     <v-card-actions>
       <v-list-item class="grow">
-        <v-list-item-avatar color="grey darken-3">
-          <v-img
-            class="elevation-6"
-            alt=""
-            src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-          ></v-img>
-        </v-list-item-avatar>
+        <v-btn @click="show_details= !show_details">Detalles</v-btn>
+        <v-icon large class="ml-6">mdi-account-circle</v-icon>
 
         <v-list-item-content>
-          <v-list-item-title>Evan You</v-list-item-title>
+          <v-list-item-title>{{review.user.name}}</v-list-item-title>
         </v-list-item-content>
-
-        <v-row
-          align="center"
-          justify="end"
-        >
-          <v-icon class="mr-1">
-            mdi-heart
-          </v-icon>
-          <span class="subheading mr-2">256</span>
-          <span class="mr-1">·</span>
-          <v-icon class="mr-1">
-            mdi-share-variant
-          </v-icon>
-          <span class="subheading">45</span>
-        </v-row>
       </v-list-item>
     </v-card-actions>
+    <template v-if="show_details">
+      <v-divider></v-divider>
+        <v-row>
+          <v-col class="ml-2">
+            <h6><v-icon>mdi-heart</v-icon>Áspectos positivos:</h6>
+          </v-col>
+
+        </v-row>
+        <v-row>
+          <v-col class="ml-2">
+            {{ review.positive_comment || "no hay detalles" }}
+          </v-col>
+        </v-row>
+         <v-row>
+          <v-col class="ml-2">
+            <h6><v-icon>mdi-message-minus-outline</v-icon> Áspectos negativos:</h6>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="ml-2">
+            {{ review.negative_comment || "no hay detalles" }}
+          </v-col>
+        </v-row>
+    </template>
   </v-card>
 </template>
 
 <script>
 export default {
+  props: {
+    review: {
+      type: Object,
+      default: {
+        user: {
+          id: 0,
+          name: "Person"
+        },
+        type: 'teacher',
+        teacher: {
+          name: "Nombre Profesor"
+        },
+        course: {
+          name: "Nombre Ramo"
+        },
+        rating: 6,
+        general_comment: "Me gustó"
+      }
+    }
+  },
+  data() {
+    return {
+      show_details: false,
+    }
+  }
 
 }
 </script>

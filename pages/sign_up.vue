@@ -126,7 +126,7 @@
               password: userInfo.password
             }
           })
-          this.$notifier.showMessage({ content: 'Bienvenido, ' + this.$auth.user.name, color: 'success' })
+          this.$notifier.showMessage({ content: 'Bienvenido!', color: 'success' })
         } catch(error) {
           this.$notifier.showMessage({ content: 'Credenciales Invalidas', color: 'red' })
         }

@@ -3,28 +3,24 @@
     "name": "courses",
     "path": "/courses",
     "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/courses.vue",
-    "chunkName": "pages/courses",
-    "_name": "_4dd1dd42"
+    "chunkName": "pages/courses"
   },
   {
     "name": "sign_up",
     "path": "/sign_up",
     "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/sign_up.vue",
-    "chunkName": "pages/sign_up",
-    "_name": "_a8e518f8"
+    "chunkName": "pages/sign_up"
   },
   {
     "name": "teachers",
     "path": "/teachers",
     "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/teachers.vue",
-    "chunkName": "pages/teachers",
-    "_name": "_7d9ac48c"
+    "chunkName": "pages/teachers"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/aenrione/MEGA/MEGAsync/PROGRAMACION/NUXT/puc-yelp-front/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_f4951d8e"
+    "chunkName": "pages/index"
   }
 ]

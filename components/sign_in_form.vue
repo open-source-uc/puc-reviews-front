@@ -50,7 +50,7 @@
             color="red"
             @click="$auth.loginWith('google')"
             >
-            Iniciar con
+            Continuar con
              <v-icon class="ml-2">
               mdi-google
             </v-icon>

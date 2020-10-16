@@ -15,7 +15,6 @@ export default {
         content: 'my website description'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   plugins: [ '@/plugins/bootstrap-vue', '@/plugins/notifier.js', '~/plugins/axios.js'],
   build: {
@@ -26,9 +25,7 @@ export default {
       '@nuxtjs/vuetify',
       '@nuxtjs/auth',
       '@nuxtjs/axios',
-
-      // With options
-      ['@nuxtjs/vuetify', { /* module options */ }]
+      '@nuxtjs/proxy'
     ],
     auth: {
       strategies: {
@@ -49,4 +46,7 @@ export default {
     axios: {
       baseURL: 'http://localhost:3000', // Used as fallback if no runtime config is provided
     },
+    proxy: {
+      '/api/v1': { target: 'http://localhost:3000', pathRewrite: {'^/api/v1': ''} }
+    }
 }

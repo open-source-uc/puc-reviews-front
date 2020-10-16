@@ -113,22 +113,18 @@
 
               <v-row>
                 <v-col>
-                  <v-checkbox
-                    v-model="teacherReviewInfo.recommended"
-                    label="Recomendado"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
                   <v-btn
                   :disabled="!valid"
                   class="mr-4"
                   color="success"
-                  @click="console.log('submit')"
+                  @click="createTeacherReview(teacherReviewInfo)"
                   >
                   Enviar
+                </v-btn>
+                <v-btn
+                color="red"
+                @click="$store.commit('closeReviewsForm')">
+                  Cerrar
                 </v-btn>
                 </v-col>
               </v-row>
@@ -158,7 +154,7 @@
               </v-row>
 
               <v-row>
-                  <v-col>
+                <v-col>
                   <h5>Ramo</h5>
                   <v-autocomplete
                   :disabled="(courses.length == 0)"
@@ -188,8 +184,7 @@
                 <v-col>
                   <v-text-field
                     v-model="courseReviewInfo.positive_comment"
-                    :rules="requiredField"
-                    label="Cosas que hizo bien"
+                    label="Cosas positivas"
                     >
                   </v-text-field>
                 </v-col>
@@ -199,19 +194,9 @@
                 <v-col>
                   <v-text-field
                     v-model="courseReviewInfo.negative_comment"
-                    :rules="requiredField"
-                    label="Cosas que hizo mal"
+                    label="Cosas negativas"
                     >
                   </v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-checkbox
-                    v-model="courseReviewInfo.recommended"
-                    label="Recomendado"
-                  ></v-checkbox>
                 </v-col>
               </v-row>
 
@@ -221,10 +206,15 @@
                   :disabled="!valid"
                   class="mr-4"
                   color="success"
-                  @click="console.log('submit')"
+                  @click="createCourseReview(courseReviewInfo)"
                   >
                   Enviar
-                </v-btn>
+                  </v-btn>
+                  <v-btn
+                  color="red"
+                  @click="$store.commit('closeReviewsForm')">
+                    Cerrar
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -256,14 +246,10 @@
         general_comment: '',
         positive_comment: '',
         negative_comment: '',
-        recommended: true
       },
       courseReviewInfo: {
         rating: 3,
-        course_id: {
-          id: '',
-          name: ''
-        },
+        course_id: null,
         general_comment: '',
         positive_comment: '',
         negative_comment: '',
@@ -281,7 +267,25 @@
           const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses?id=${teacher_id}`)
           this.teacher_courses = teacherCoursesResponse.data
 
-      }
+      },
+        async createTeacherReview(data) {
+          $store.commit('closeReviewsForm')
+          try {
+            const response = await this.$axios.post('/api/v1/teacher_review/new', data)
+            this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
+          } catch(error) {
+            this.$notifier.showMessage({ content: 'Error', color: 'red' })
+          }
+      },
+        async createCourseReview(data) {
+          $store.commit('closeReviewsForm')
+          try {
+              const response = await this.$axios.post('/api/v1/course_review/new', data)
+              this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
+            } catch(error) {
+              this.$notifier.showMessage({ content: 'Error', color: 'red' })
+            }
+        },
     }
   }
 </script>
