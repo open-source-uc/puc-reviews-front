@@ -1,9 +1,7 @@
 # puc-reviews-front
 
 Esta app está basada sirve a modo de 'front-end' para el proyecto de reseñas-puc. 
-Su uso se basa en el framework de [NUXT.JS] y su desarrollo se basa en el uso de [VUE]
-[NUXT.JS]: https://nuxtjs.org/
-[VUE]: https://vuejs.org/
+Su uso se basa en el framework de [NUXT.JS](https://nuxtjs.org/) y su desarrollo se basa en el uso de [VUE]( https://vuejs.org/).
 
 ## Seteo inicial
 
@@ -18,8 +16,8 @@ yarn install
 yarn dev
 # 4. Dirijete a http://localhost:8000/ en tu buscador para ver la aplicación
 ```
-Nota: Asegurate de tener seteada la api de la app de [puc-reviews-rails] abierta y corriendo con
+Nota: Asegurate de tener seteada la api de la app de [puc-reviews-rails](https://github.com/puc-reviews/puc-reviews-rail) abierta y corriendo con
 ```bash
 rails server
 ```
-[puc-reviews-rails]: https://github.com/puc-reviews/puc-reviews-rail
+
