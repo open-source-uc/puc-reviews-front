@@ -9,9 +9,10 @@
     <v-progress-circular
       indeterminate
       color="primary"
-      v-else
+      class="mx-auto"
+      v-else-if="!requested"
     ></v-progress-circular>
-    <!-- <h6 v-else>Nada para mostrar</h6> -->
+    <h6 v-else class="mx-auto">Nada para mostrar</h6>
   </v-app>
 </template>
 
@@ -31,6 +32,10 @@ export default {
       default() {
         return []
       }
+    },
+    requested: {
+      type: Boolean,
+      default: false
     },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app  loading>
     <v-card
       class="mx-auto mt-6 pa-6"
       style="width: 50%;"
@@ -99,6 +99,7 @@
   export default {
     data: () => ({
       valid: false,
+      loading: false,
       view_psw: false,
       view_conf_pws: false,
       userInfo: {
@@ -118,6 +119,7 @@
     }),
     methods: {
       async registerUser(userInfo) {
+        this.$store.commit('changeLoaderState', true)
         try {
           await this.$axios.post('/api/v1/auth/', userInfo)
           this.$auth.loginWith('customStrategy', {
@@ -126,9 +128,11 @@
               password: userInfo.password
             }
           })
+          this.$store.commit('changeLoaderState', false)
           this.$notifier.showMessage({ content: 'Bienvenido!', color: 'success' })
         } catch(error) {
           this.$notifier.showMessage({ content: 'Credenciales Invalidas', color: 'red' })
+          this.$store.commit('changeLoaderState', false)
         }
       }
     }

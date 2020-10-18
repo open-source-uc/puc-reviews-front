@@ -7,7 +7,7 @@
         class="mx-auto mt-6 text-align-center pa-6"
         :style="$auth.loggedIn ? 'left: 50%;' : null">
           <h2>Últimas Reseñas</h2>
-          <widget_review_list title="" :reviews="last_reviews"></widget_review_list>
+          <widget_review_list title="" :reviews="last_reviews" :requested='lastReviewsRequested'></widget_review_list>
         </v-card>
       </v-col>
       <v-col>
@@ -22,7 +22,7 @@
 
 <script>
 import widget_review_list from "@/components/widget_review_list.vue"
-import sign_in_form from "@/components/sign_in_form.vue"
+import sign_in_form from "@/components/forms/sign_in_form.vue"
 
 export default {
   mounted() {
@@ -34,6 +34,7 @@ export default {
   },
   data: function () {
     return {
+      lastReviewsRequested: false,
       last_reviews: []
     }
   },
@@ -42,6 +43,7 @@ export default {
         const response = await this.$axios.get(`/api/v1/latest_reviews?n=${n}`)
         const items = response.data
         this.last_reviews = items
+        this.lastReviewsRequested = true
       },
   }
 }

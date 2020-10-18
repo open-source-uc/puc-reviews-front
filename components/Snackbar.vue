@@ -1,8 +1,8 @@
 
 <template>
   <v-snackbar v-model="show" :color="color">
+    <v-btn text @click="show = false"><v-icon>mdi-close</v-icon></v-btn>
     {{ message }}
-    <v-btn text @click="show = false"><v-icon>mdi-close</v-icon> </v-btn>
   </v-snackbar>
 </template>
 

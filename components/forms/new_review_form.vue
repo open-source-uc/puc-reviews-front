@@ -264,23 +264,23 @@
           this.courses = courseResponse.data
       },
       async getTeacherCourses(teacher_id) {
-          const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses?id=${teacher_id}`)
+          const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses/${teacher_id}`)
           this.teacher_courses = teacherCoursesResponse.data
 
       },
         async createTeacherReview(data) {
-          $store.commit('closeReviewsForm')
+          this.$store.commit('closeReviewsForm')
           try {
-            const response = await this.$axios.post('/api/v1/teacher_review/new', data)
+            const response = await this.$axios.post('/api/v1/teacher_reviews', data)
             this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
           } catch(error) {
             this.$notifier.showMessage({ content: 'Error', color: 'red' })
           }
       },
         async createCourseReview(data) {
-          $store.commit('closeReviewsForm')
+          this.$store.commit('closeReviewsForm')
           try {
-              const response = await this.$axios.post('/api/v1/course_review/new', data)
+              const response = await this.$axios.post('/api/v1/course_reviews', data)
               this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
             } catch(error) {
               this.$notifier.showMessage({ content: 'Error', color: 'red' })

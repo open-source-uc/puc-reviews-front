@@ -1,6 +1,6 @@
 export default {
   server: {
-    port: 8000, // default: 3000
+    port: 8000,
     host: '0.0.0.0' // default: localhost
   },
   ssr: false,
@@ -28,8 +28,8 @@ export default {
     ],
     auth: {
       strategies: {
-        customStrategy: {
-          _scheme: '~/schemes/customScheme',
+        customLocalStrategy: {
+          _scheme: '~/schemes/customLocalScheme',
           endpoints: {
             login: { url: '/api/v1/auth/sign_in', method: 'post', propertyName: 'access-token' },
             logout: { url: '/api/v1/auth/sign_out', method: 'delete' },
@@ -37,9 +37,9 @@ export default {
           },
           tokenRequired: true,
         },
-        google: {
-        client_id: '867429787247-ct516vku7u7d6n9qkmhu6hoel936gi27.apps.googleusercontent.com'
-       },
+      //   google: {
+      //   client_id:
+      //  },
       }
     },
     axios: {

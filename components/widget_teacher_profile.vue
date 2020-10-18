@@ -32,7 +32,7 @@
         <!-- COLUMNA REVIEWS -->
             <v-col
             >
-              <widget_review_list :reviews="teacher_reviews"></widget_review_list>
+              <widget_review_list :reviews="teacher_reviews" :requested='infoRequested'></widget_review_list>
             </v-col>
           </v-row>
         </v-card-text>
@@ -47,6 +47,10 @@ export default {
     widget_review_list
   },
   props: {
+    infoRequested: {
+      type: Boolean,
+      default: false
+    },
     teacher: {
       type: Object,
       default() {

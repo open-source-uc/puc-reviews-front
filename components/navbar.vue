@@ -13,6 +13,12 @@
         <!-- Right aligned nav items -->
         <!-- IF LOGGED IN  -->
         <b-navbar-nav class="ml-auto">
+            <b-nav-item v-if="$auth.loggedIn && $auth.user.role != 'student'" to='/forms'>
+              <button class="btn btn-primary" >
+                <v-icon dark>mdi-plus</v-icon> FORMS
+              </button>
+            </b-nav-item>
+
             <b-nav-form>
               <v-autocomplete
                   v-model="entity"
@@ -31,6 +37,7 @@
                 <b-button class="ml-2"
                 @click="showInfo = true" :disabled="entityInfo.length == 0"><v-icon>mdi-magnify</v-icon></b-button>
             </b-nav-form>
+
             <template v-if="$auth.loggedIn">
             <b-nav-item>
               <button class="btn btn-success" @click="$store.commit('openReviewsForm')">
@@ -64,15 +71,15 @@
       v-model="showInfo"
       width="800"
     >
-      <widget_teacher_profile v-if="entity.type == 'teacher'" :teacher="entityInfo" :teacher_reviews="entity_reviews"></widget_teacher_profile>
-      <widget_course_profile v-else :course="entityInfo" :course_reviews="entity_reviews"></widget_course_profile>
+      <widget_teacher_profile v-if="entity.type == 'teacher'" :teacher="entityInfo" :teacher_reviews="entity_reviews" :infoRequested='entityInfoRequested'></widget_teacher_profile>
+      <widget_course_profile v-else :course="entityInfo" :course_reviews="entity_reviews" :infoRequested='entityInfoRequested'></widget_course_profile>
 
     </v-dialog>
   </div>
 </template>
 
 <script>
-import new_review_form from "@/components/new_review_form.vue"
+import new_review_form from "@/components/forms/new_review_form.vue"
 import widget_teacher_profile from "@/components/widget_teacher_profile.vue"
 import widget_course_profile from "@/components/widget_course_profile.vue"
 
@@ -91,7 +98,8 @@ export default {
       search_items: [],
       showInfo: false,
       entityInfo: [],
-      entity_reviews: []
+      entity_reviews: [],
+      entityInfoRequested: false,
     }
   },
   methods: {
@@ -104,6 +112,7 @@ export default {
         this.search_items = Response.data
       },
     async getEntityInfo(id, type) {
+      this.entityInfoRequested = false
       let path = undefined
       if (type == 'teacher') {
         path = 'teachers'
@@ -120,6 +129,7 @@ export default {
           const ReviewsResponse = await this.$axios.get(`/api/v1/course_reviews/course/${id}`)
           this.entity_reviews = ReviewsResponse.data
         }
+      this.entityInfoRequested = true
       }
     },
   },

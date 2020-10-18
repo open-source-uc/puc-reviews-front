@@ -21,7 +21,7 @@
           <v-col>
             <v-text-field
               v-model="userInfo.password"
-              :rules="requiredFiled"
+              :rules="requiredField"
               label="Contraseña"
               :append-icon="!view_psw ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="view_psw = !view_psw"
@@ -43,7 +43,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <!-- <v-row>
           <v-col>
             <v-btn
             class="mr-4"
@@ -56,7 +56,7 @@
             </v-icon>
           </v-btn>
           </v-col>
-        </v-row>
+        </v-row> -->
       </v-container>
     </v-form>
   </v-card>
@@ -67,7 +67,7 @@
     data: () => ({
       valid: false,
       view_psw: false,
-      requiredFiled: [
+      requiredField: [
         v => !!v || 'Campo requerido',
       ],
       emailRules: [
@@ -81,13 +81,16 @@
     }),
     methods: {
       async loginUser(userInfo) {
+        this.$store.commit('changeLoaderState', true)
         try {
-          let response = await this.$auth.loginWith('customStrategy', {
+          let response = await this.$auth.loginWith('customLocalStrategy', {
           data: userInfo
         })
+        this.$store.commit('changeLoaderState', false)
         this.$notifier.showMessage({ content: '¡Bienvenido!', color: 'success' })
         } catch(error) {
           this.$notifier.showMessage({ content: 'Hubo un problema al iniciar sesión', color: 'red' })
+          this.$store.commit('changeLoaderState', false)
         }
       }
     }

@@ -28,7 +28,7 @@
       <v-dialog
       v-model="showProfile"
       width="800">
-        <widget_course_profile :course="course" :course_reviews="course_reviews"></widget_course_profile>
+        <widget_course_profile :course="course" :course_reviews="course_reviews" :infoRequested='requestedCourseInfo'></widget_course_profile>
       </v-dialog>
   </v-app>
 </template>
@@ -41,7 +41,8 @@ export default {
     widget_course_profile
   },
   data() {
-    return{
+    return {
+      requestedCourseInfo: false,
       showProfile: false,
       course: {},
       course_reviews: [],
@@ -67,11 +68,12 @@ export default {
         })
       },
       async getCourseInfo(id) {
+          this.requestedCourseInfo = false
           const courseResponse = await this.$axios.get(`/api/v1/courses/${id}/`)
           this.course = courseResponse.data
           const reviewsResponse = await this.$axios.get(`/api/v1/course_reviews/course/${id}/`)
           this.course_reviews = reviewsResponse.data
-
+          this.requestedCourseInfo = true
       },
       async openProfile(new_id) {
         this.getCourseInfo(new_id);

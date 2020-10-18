@@ -28,7 +28,7 @@
     <v-dialog
     v-model="showProfile"
     width="800">
-      <widget_teacher_profile :teacher="teacher" :teacher_reviews="teacher_reviews"></widget_teacher_profile>
+      <widget_teacher_profile :teacher="teacher" :teacher_reviews="teacher_reviews" :infoRequested='requestedTeacherInfo'></widget_teacher_profile>
     </v-dialog>
   </v-app>
 </template>
@@ -39,6 +39,7 @@ import widget_teacher_profile from "@/components/widget_teacher_profile.vue"
 export default {
   data: function(){
     return{
+      requestedTeacherInfo: false,
       showProfile: false,
       teacher: {},
       teacher_reviews: [],
@@ -67,10 +68,12 @@ export default {
         })
       },
       async getTeacherInfo(id) {
+          this.requestedTeacherInfo = false
           const teacherResponse = await this.$axios.get(`/api/v1/teachers/${id}/`)
           this.teacher = teacherResponse.data
           const reviewsResponse = await this.$axios.get(`/api/v1/teacher_reviews/teacher/${id}/`)
           this.teacher_reviews = reviewsResponse.data
+          this.requestedTeacherInfo = true
 
       },
       async openProfile(new_id) {
