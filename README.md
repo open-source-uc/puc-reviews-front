@@ -1,6 +1,6 @@
 # puc-reviews-front
 
-Esta app está basada sirve a modo de 'front-end' para el proyecto de reseñas-puc. 
+Esta app está basada sirve a modo de 'front-end' para el proyecto de [reseñas-puc](https://github.com/puc-reviews). 
 Su uso se basa en el framework de [NUXT.JS](https://nuxtjs.org/) y su desarrollo se basa en el uso de [VUE]( https://vuejs.org/).
 
 ## Seteo inicial
