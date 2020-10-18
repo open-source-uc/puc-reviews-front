@@ -4,7 +4,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "heroku-post-build": "nuxt build"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",

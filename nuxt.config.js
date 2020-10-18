@@ -1,7 +1,6 @@
 export default {
   server: {
-    port: 8000,
-    host: '0.0.0.0' // default: localhost
+    port: process.env.PORT || 8000
   },
   ssr: false,
   head: {
@@ -23,8 +22,7 @@ export default {
   buildModules: [
       '@nuxtjs/vuetify',
       '@nuxtjs/auth',
-      '@nuxtjs/axios',
-      '@nuxtjs/proxy'
+      '@nuxtjs/axios'
     ],
     auth: {
       strategies: {
@@ -43,9 +41,6 @@ export default {
       }
     },
     axios: {
-      baseURL: process.env.API_URL || 'http://localhost:3000', // Used as fallback if no runtime config is provided
-    },
-    proxy: {
-      '/api/v1': { target: 'http://localhost:3000', pathRewrite: {'^/api/v1': ''} }
+      baseURL: process.env.BASE_URL || 'http://localhost:3000'
     }
 }
