@@ -36,21 +36,26 @@
       style="text-align: center;"
       readonly
       length="7"
-      size="32"
+      :size="$vuetify.breakpoint.xs ? '20':'32'"
       >
       </v-rating>
       <h6 class="mt-2" v-if="review.teacher != null "> <v-icon>mdi-notebook</v-icon> Ramo: {{review.course.name}}</h6>
       <v-divider></v-divider>
-      {{ review.general_comment }}
+      <p :class="$vuetify.breakpoint.xs ? 'subtitle-1':'headline'">{{ review.general_comment }}</p> 
     </v-card-text>
 
     <v-card-actions>
       <v-list-item class="grow">
-        <v-btn @click="show_details= !show_details">Detalles</v-btn>
+        <v-btn @click="show_details= !show_details">
+          <template v-if='$vuetify.breakpoint.width > 365'>
+          Detalles
+          </template>
+          <v-icon medium v-else>mdi-details</v-icon>
+        </v-btn>
         <v-icon large class="ml-6">mdi-account-circle</v-icon>
 
         <v-list-item-content>
-          <v-list-item-title>{{review.user.name}}</v-list-item-title>
+          <v-list-item-title class="">{{review.user.name}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-card-actions>

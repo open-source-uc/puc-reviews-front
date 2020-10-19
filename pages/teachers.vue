@@ -26,7 +26,7 @@
     </b-table>
     </v-card>
     <v-dialog
-    v-model="showProfile"
+    v-model="$store.state.showProfile"
     width="800">
       <widget_teacher_profile :teacher="teacher" :teacher_reviews="teacher_reviews" :infoRequested='requestedTeacherInfo'></widget_teacher_profile>
     </v-dialog>
@@ -78,7 +78,7 @@ export default {
       },
       async openProfile(new_id) {
         this.getTeacherInfo(new_id);
-        this.showProfile = true
+        this.$store.commit('openProfile')
       }
     },
 }

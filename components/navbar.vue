@@ -35,7 +35,7 @@
                   @keydown="getItems(search_params)">
                 </v-autocomplete>
                 <b-button class="ml-2"
-                @click="showInfo = true" :disabled="entityInfo.length == 0"><v-icon>mdi-magnify</v-icon></b-button>
+                @click="$store.commit('openProfile')" :disabled="entityInfo.length == 0"><v-icon>mdi-magnify</v-icon></b-button>
             </b-nav-form>
 
             <template v-if="$auth.loggedIn">
@@ -61,14 +61,18 @@
       </b-collapse>
     </b-navbar>
     <v-dialog
+      max-width="600"
+      :fullscreen="$vuetify.breakpoint.mobile"
       v-model="$store.state.showReviewForm"
-      width="500"
+      :width="$vuetify.breakpoint.width"
       @click:outside="$store.commit('closeReviewsForm')"
     >
-      <new_review_form></new_review_form>
+      <new_review_form :width='$vuetify.breakpoint.width'></new_review_form>
     </v-dialog>
+
     <v-dialog
-      v-model="showInfo"
+      v-model="$store.state.showProfile"
+      @click:outside="$store.commit('closeProfile')"
       width="800"
     >
       <widget_teacher_profile v-if="entity.type == 'teacher'" :teacher="entityInfo" :teacher_reviews="entity_reviews" :infoRequested='entityInfoRequested'></widget_teacher_profile>
@@ -96,8 +100,7 @@ export default {
       entity: {},
       search_params: null,
       search_items: [],
-      showInfo: false,
-      entityInfo: [],
+      entityInfo: {},
       entity_reviews: [],
       entityInfoRequested: false,
     }

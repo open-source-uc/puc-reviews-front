@@ -1,5 +1,6 @@
 export const state = () => ({
   showReviewForm: false,
+  showProfile: false,
   loader: false,
   requiredField: [
     v => !!v || 'Campo requerido',
@@ -19,5 +20,11 @@ export const mutations = {
   },
   changeLoaderState (state, value) {
     state.loader = value
+  },
+  openProfile (state) {
+    state.showProfile = true
+  },
+  closeProfile (state) {
+    state.showProfile = false
   },
 }

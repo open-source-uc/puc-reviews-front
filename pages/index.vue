@@ -1,17 +1,16 @@
 <template>
   <v-app>
     <v-row>
-      <v-col
-      class="ml-6">
+      <v-col v-if="!$auth.loggedIn">
+        <sign_in_form ></sign_in_form>
+      </v-col>
+      <v-col>
         <v-card
         class="mx-auto mt-6 text-align-center pa-6"
-        :style="$auth.loggedIn ? 'left: 50%;' : null">
+        >
           <h2>Últimas Reseñas</h2>
           <widget_review_list title="" :reviews="last_reviews" :requested='lastReviewsRequested'></widget_review_list>
         </v-card>
-      </v-col>
-      <v-col>
-        <sign_in_form v-if="!$auth.loggedIn"></sign_in_form>
       </v-col>
     </v-row>
   </v-app>

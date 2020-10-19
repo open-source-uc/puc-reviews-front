@@ -6,14 +6,19 @@
   scrollable>
         <v-card-title class="headline grey lighten-2 mb-2">
           {{ teacher.name }}
+          <v-btn class="ml-auto"
+            @click="$store.commit('closeProfile')">
+              <v-icon >mdi-close</v-icon>
+            </v-btn>
         </v-card-title>
 
         <v-card-text>
           <v-row >
         <!-- COLUMNA Atributos -->
             <v-col
-            cols="4">
-              <h5>Detalles</h5>
+            >
+              <h5 v-if="!$vuetify.breakpoint.xs">Detalles</h5>
+              <h6 v-else>Detalles</h6>
               <v-divider></v-divider>
               <v-row>
                  <h6><v-icon>mdi-star</v-icon> {{ teacher.global_rating }}</h6>
@@ -29,11 +34,11 @@
                 </b-table>
               </v-row>
             </v-col>
-        <!-- COLUMNA REVIEWS -->
-            <v-col
-            >
-              <widget_review_list :reviews="teacher_reviews" :requested='infoRequested'></widget_review_list>
-            </v-col>
+        <!-- FILA REVIEWS -->
+          </v-row>
+
+          <v-row>
+            <widget_review_list :reviews="teacher_reviews" :requested='infoRequested'></widget_review_list>
           </v-row>
         </v-card-text>
       </v-card>

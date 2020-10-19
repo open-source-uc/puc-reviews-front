@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-card>
+    <v-card
+    :width="width"
+    class="mx-auto"
+    max-width="600"
+    max-height="400">
       <v-tabs
         v-model="tab"
         class="bg-dark"
@@ -9,19 +13,26 @@
         icons-and-text
       >
         <v-tabs-slider></v-tabs-slider>
-
-        <v-tab href="#tab-1">
+        <v-container class="d-flex justify-center" >
+        <v-tab to="#tab-1" class="mx-auto">
           Profesor
           <v-icon>mdi-human-greeting</v-icon>
         </v-tab>
 
-        <v-tab href="#tab-2">
+        <v-tab to="#tab-2" class="mx-auto">
           Ramo
           <v-icon>mdi-pencil</v-icon>
         </v-tab>
+
+        <v-btn color="red" class="ml-auto"
+        @click="$store.commit('closeReviewsForm')">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        </v-container>
       </v-tabs>
-      <!-- TAB 1 CONTENT-->
+
       <v-tabs-items v-model="tab">
+        <!-- TAB 1 CONTENT-->
         <v-tab-item
           :key="1"
           :value="'tab-' + 1"
@@ -37,7 +48,8 @@
                   style="text-align: center;"
                   half-increments
                   length="7"
-                  size="32"
+                  hover
+                  :size="$vuetify.breakpoint.xs ? '24':'32'"
                   required>
                   </v-rating>
                 </v-col>
@@ -147,7 +159,8 @@
                   style="text-align: center;"
                   half-increments
                   length="7"
-                  size="32"
+                  hover
+                  :size="$vuetify.breakpoint.xs ? '24':'32'"
                   required>
                   </v-rating>
                 </v-col>
@@ -201,7 +214,7 @@
               </v-row>
 
               <v-row>
-                <v-col>
+                <v-col class="mt-6">
                   <v-btn
                   :disabled="!valid"
                   class="mr-4"
@@ -227,6 +240,7 @@
 
 <script>
   export default {
+    props: ['width', 'height'],
     mounted() {
       this.setOptions()
     },
@@ -268,24 +282,24 @@
           this.teacher_courses = teacherCoursesResponse.data
 
       },
-        async createTeacherReview(data) {
-          this.$store.commit('closeReviewsForm')
-          try {
-            const response = await this.$axios.post('/api/v1/teacher_reviews', data)
+      async createTeacherReview(data) {
+        this.$store.commit('closeReviewsForm')
+        try {
+          const response = await this.$axios.post('/api/v1/teacher_reviews', data)
+          this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
+        } catch(error) {
+          this.$notifier.showMessage({ content: 'Error', color: 'red' })
+        }
+    },
+      async createCourseReview(data) {
+        this.$store.commit('closeReviewsForm')
+        try {
+            const response = await this.$axios.post('/api/v1/course_reviews', data)
             this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
           } catch(error) {
             this.$notifier.showMessage({ content: 'Error', color: 'red' })
           }
       },
-        async createCourseReview(data) {
-          this.$store.commit('closeReviewsForm')
-          try {
-              const response = await this.$axios.post('/api/v1/course_reviews', data)
-              this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
-            } catch(error) {
-              this.$notifier.showMessage({ content: 'Error', color: 'red' })
-            }
-        },
     }
   }
 </script>
