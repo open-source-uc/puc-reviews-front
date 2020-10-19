@@ -38,7 +38,9 @@
           </v-row>
 
           <v-row>
+            <v-col>
             <widget_review_list :reviews="teacher_reviews" :requested='infoRequested'></widget_review_list>
+            </v-col>
           </v-row>
         </v-card-text>
       </v-card>

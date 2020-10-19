@@ -55,7 +55,7 @@
         <v-icon large class="ml-6">mdi-account-circle</v-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="">{{review.user.name}}</v-list-item-title>
+          <v-list-item class="body-1">{{review.user.name}}</v-list-item>
         </v-list-item-content>
       </v-list-item>
     </v-card-actions>

@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app>
     <navbar></navbar>
     <v-card :loading='$store.state.loader'>
     <Nuxt />
@@ -26,7 +26,6 @@ export default {
 
 <style>
 #app {
-    overflow: hidden;
-    height: 100vh;
+    overflow: auto;
 }
 </style>
