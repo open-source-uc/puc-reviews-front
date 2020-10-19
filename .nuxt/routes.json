@@ -3,30 +3,35 @@
     "name": "courses",
     "path": "/courses",
     "component": "/mnt/d/Documents/PROGRAMACION PERSONAL/puc-reviews/puc-reviews-front/pages/courses.vue",
-    "chunkName": "pages/courses"
+    "chunkName": "pages/courses",
+    "_name": "_03e2a81a"
   },
   {
     "name": "forms",
     "path": "/forms",
     "component": "/mnt/d/Documents/PROGRAMACION PERSONAL/puc-reviews/puc-reviews-front/pages/forms.vue",
-    "chunkName": "pages/forms"
+    "chunkName": "pages/forms",
+    "_name": "_d773e4ac"
   },
   {
     "name": "sign_up",
     "path": "/sign_up",
     "component": "/mnt/d/Documents/PROGRAMACION PERSONAL/puc-reviews/puc-reviews-front/pages/sign_up.vue",
-    "chunkName": "pages/sign_up"
+    "chunkName": "pages/sign_up",
+    "_name": "_5ef5e3d0"
   },
   {
     "name": "teachers",
     "path": "/teachers",
     "component": "/mnt/d/Documents/PROGRAMACION PERSONAL/puc-reviews/puc-reviews-front/pages/teachers.vue",
-    "chunkName": "pages/teachers"
+    "chunkName": "pages/teachers",
+    "_name": "_3b2e55a6"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/mnt/d/Documents/PROGRAMACION PERSONAL/puc-reviews/puc-reviews-front/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_118abe66"
   }
 ]

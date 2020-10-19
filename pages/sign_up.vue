@@ -122,7 +122,7 @@
         this.$store.commit('changeLoaderState', true)
         try {
           await this.$axios.post('/api/v1/auth/', userInfo)
-          this.$auth.loginWith('customStrategy', {
+          this.$auth.loginWith('customLocalStrategy', {
             data: {
               email: userInfo.email,
               password: userInfo.password
