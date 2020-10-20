@@ -4,32 +4,125 @@
     <v-card
     class="mx-auto mt-6"
     width="1000">
-      <b-table
-      ref="table"
-      striped
-      :items="getTeachers"
-      :fields="fields"
-      class="mb-0"
-      no-provider-sorting
-      show-empty
-      responsive
-      >
-      <template v-slot:cell(show_profile)="row">
-        <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
-          Mostrar
-        </b-button>
-      </template>
+    <v-row class="ml-2">
+        <v-col><h4>Filtros</h4>
+        <v-btn class="mr-4" color="primary"
+          @click="showFilters = !showFilters">
+          <v-icon v-if="showFilters">mdi-arrow-down-circle </v-icon>
+          <v-icon v-else>mdi-arrow-right-circle </v-icon>
+          </v-btn></v-col>
+        <v-col>
+          <v-btn class="mr-4" color="primary"
+          @click="updateTeachers">
+          Aplicar Filtro<v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-col>
+    </v-row>
+    <template v-if="showFilters">
+    <v-row class="pa-6">
+      <v-col>
+        <h6>Nota</h6>
+        <v-autocomplete
+        v-model="searchParams.rating"
+        :items="$store.state.ratingIntervals"
+        item-text="name"
+        item-value="value"
+        clearable>
+        </v-autocomplete>
+      </v-col>
+      <v-col>
+        <h6>Ramo</h6>
+        <v-autocomplete
+        :disabled="(searchParams.faculty_id != undefined) || (searchParams.school_id != undefined)"
+        v-model="searchParams.course_id"
+        item-text="name"
+        item-value="id"
+        clearable
+        solo
+        flat
+        hide-details
+        no-data-text="Sin entradas..."
+        :items="autoCompleteItems.courses"
+        label="Nombre ramo">
+        </v-autocomplete>
+      </v-col>
+    </v-row>
 
-      <template v-slot:empty>
-        <center><h5>No se encontraron profesores.</h5></center>
-      </template>
-    </b-table>
+    <v-row class="px-6">
+      <v-col>
+        <h6>Escuela</h6>
+        <v-autocomplete
+        :disabled="(searchParams.faculty_id != undefined) || (searchParams.course_id != undefined)"
+        v-model="searchParams.school_id"
+        item-text="name"
+        item-value="id"
+        clearable
+        solo
+        flat
+        hide-details
+        no-data-text="Sin entradas..."
+        :items="autoCompleteItems.schools"
+        label="Nombre ramo">
+        </v-autocomplete>
+      </v-col>
+
+      <v-col>
+        <h6>Facultdad</h6>
+        <v-autocomplete
+        :disabled="(searchParams.course_id != undefined) || (searchParams.school_id != undefined)"
+        v-model="searchParams.faculty_id"
+        item-text="name"
+        item-value="id"
+        clearable
+        solo
+        flat
+        hide-details
+        no-data-text="Sin entradas..."
+        :items="autoCompleteItems.faculties"
+        label="Nombre ramo">
+        </v-autocomplete>
+      </v-col>
+    </v-row>
+    </template>
+
+    <v-row>
+      <v-col>
+        <b-table
+          ref="table"
+          id="teachers-table"
+          striped
+          :items="autoCompleteItems.teachers"
+          :fields="fields"
+          class="mb-0"
+          no-provider-sorting
+          show-empty
+          responsive
+          :per-page="perPage"
+          :current-page="currentPage"
+          >
+          <template v-slot:cell(show_profile)="row">
+            <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
+              Mostrar
+            </b-button>
+          </template>
+
+          <template v-slot:empty>
+            <center><h5>No se encontraron profesores.</h5></center>
+          </template>
+        </b-table>
+      </v-col>
+    </v-row>
+    <v-row>
+      <b-pagination
+        class="mx-auto"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="teachers-table"
+      ></b-pagination>
+    </v-row>
+
     </v-card>
-    <v-dialog
-    v-model="$store.state.showProfile"
-    width="800">
-      <widget_teacher_profile :teacher="teacher" :teacher_reviews="teacher_reviews" :infoRequested='requestedTeacherInfo'></widget_teacher_profile>
-    </v-dialog>
   </v-app>
 </template>
 
@@ -37,13 +130,39 @@
 import widget_teacher_profile from "@/components/widget_teacher_profile.vue"
 
 export default {
+  async created() {
+    await this.getAutoCompleteItems()
+  },
+  computed: {
+      rows() {
+        return this.autoCompleteItems.teachers.length
+      }
+  },
   data: function(){
     return{
+      showFilters: false,
       requestedTeacherInfo: false,
-      showProfile: false,
-      teacher: {},
-      teacher_reviews: [],
+      searchParams: {
+        course_id: undefined,
+        school_id: undefined,
+        faculty_id: undefined,
+        rating: {}
+      },
+      perPage: 7,
+      currentPage: 1,
+      autoCompleteItems: {
+        courses: [],
+        schools: [],
+        faculties: [],
+        teachers: [],
+        teacher_reviews: [],
+      },
       fields: [
+          {
+            key: 'global_rating',
+            label: 'Nota',
+            sortable: true,
+          },
           {
             key: 'name',
             label: 'Nombre',
@@ -60,26 +179,67 @@ export default {
     widget_teacher_profile
   },
   methods: {
-      getTeachers() {
-        const promise = this.$axios.get(`/api/v1/teachers`)
-        return promise.then(response => {
-          const items = response.data
-          return items || []
+      async updateTeachers() {
+        this.$store.commit('changeLoaderState', true)
+        if (this.searchParams.rating == undefined) {
+          this.searchParams.rating = {}
+        }
+        const response = await this.$axios.get(`/api/v1/search_teachers`,
+        {
+          params: {
+            course_id: this.searchParams.course_id,
+            school_id: this.searchParams.school_id,
+            faculty_id: this.searchParams.faculty_id,
+            rating_max: this.searchParams.rating.max,
+            rating_min: this.searchParams.rating.min,
+          }
         })
+        this.$store.commit('changeLoaderState', false)
+        this.autoCompleteItems.teachers = response.data
       },
       async getTeacherInfo(id) {
-          this.requestedTeacherInfo = false
-          const teacherResponse = await this.$axios.get(`/api/v1/teachers/${id}/`)
-          this.teacher = teacherResponse.data
-          const reviewsResponse = await this.$axios.get(`/api/v1/teacher_reviews/teacher/${id}/`)
-          this.teacher_reviews = reviewsResponse.data
-          this.requestedTeacherInfo = true
+          this.$store.commit('changeRequestedEntityInfo', false);
 
+          this.$store.commit('changeCurrentEntityType', 'teacher')
+          const teacherResponse = await this.$axios.get(`/api/v1/teachers/${id}/`)
+          this.$store.commit('changeEntityInfo', teacherResponse.data);
+
+          const reviewsResponse = await this.$axios.get(`/api/v1/teacher_reviews/teacher/${id}/`)
+          this.$store.commit('changeEntityReviews', reviewsResponse.data);
+
+          this.$store.commit('changeRequestedEntityInfo', true);
+      },
+      async openProfile(new_id) {
+        this.$store.commit('changeLoaderState', true);
+        await this.getTeacherInfo(new_id);
+        this.$store.commit('openProfile');
+        this.$store.commit('changeLoaderState', false);
+      },
+      async getAutoCompleteItems() {
+        // Teachers
+        const teachersResponse = await this.$axios.get(`/api/v1/teachers`)
+        this.autoCompleteItems.teachers = teachersResponse.data
+        // Courses
+        const coursesResponse = await this.$axios.get(`/api/v1/courses`)
+        this.autoCompleteItems.courses = coursesResponse.data
+        // Schools
+        const schoolsResponse = await this.$axios.get(`/api/v1/schools`)
+        this.autoCompleteItems.schools = schoolsResponse.data
+        // Faculties
+        const facultiesResponse = await this.$axios.get(`/api/v1/faculties`)
+        this.autoCompleteItems.faculties = facultiesResponse.data
       },
       async openProfile(new_id) {
         this.getTeacherInfo(new_id);
-        this.$store.commit('openProfile')
-      }
+        this.$store.commit('openProfile');
+      },
+      closeAndCleanUpEntity() {
+        this.$store.commit('changeEntityInfo', [])
+        this.$store.commit('changeEntityReviews', [])
+        this.$store.commit('changeRequestedEntityInfo', false)
+        this.$store.commit('changeCurrentEntityType', null)
+        this.$store.commit('closeProfile')
+      },
     },
 }
 </script>

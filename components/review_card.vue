@@ -34,6 +34,7 @@
       background-color="white"
       v-model="review.rating"
       style="text-align: center;"
+      half-increments
       readonly
       length="7"
       :size="$vuetify.breakpoint.xs ? '20':'32'"

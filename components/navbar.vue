@@ -21,9 +21,11 @@
 
             <b-nav-form>
               <v-autocomplete
+                  style="width: 200px;"
                   v-model="entity"
                   solo
                   flat
+                  dense
                   hide-details
                   :search-input.sync="search_params"
                   no-data-text="Sin entradas..."
@@ -31,12 +33,14 @@
                   item-value="info"
                   item-text="name"
                   label="Buscar"
-                  @change="getEntityInfo(entity.id, entity.type)"
+                  clearable
+                  @change="getEntityInfo"
                   @keydown="getItems(search_params)">
                 </v-autocomplete>
                 <b-button class="ml-2"
-                @click="$store.commit('openProfile')" :disabled="entityInfo.length == 0"><v-icon>mdi-magnify</v-icon></b-button>
+                @click="$store.commit('openProfile')" :disabled="Object.entries($store.state.currentEntityInfo).length == 0"><v-icon>mdi-magnify</v-icon></b-button>
             </b-nav-form>
+
 
             <template v-if="$auth.loggedIn">
             <b-nav-item>
@@ -72,12 +76,13 @@
 
     <v-dialog
       v-model="$store.state.showProfile"
-      @click:outside="$store.commit('closeProfile')"
+      @click:outside="closeAndCleanUpEntity"
       width="800"
     >
-      <widget_teacher_profile v-if="entity.type == 'teacher'" :teacher="entityInfo" :teacher_reviews="entity_reviews" :infoRequested='entityInfoRequested'></widget_teacher_profile>
-      <widget_course_profile v-else :course="entityInfo" :course_reviews="entity_reviews" :infoRequested='entityInfoRequested'></widget_course_profile>
-
+    <template v-if="Object.entries($store.state.currentEntityInfo).length > 0">
+      <widget_teacher_profile v-if="$store.state.currentEntityType == 'teacher'" :teacher="$store.state.currentEntityInfo" :teacher_reviews="$store.state.currentEntityReviews" :infoRequested='$store.state.requestedEntityInfo'></widget_teacher_profile>
+      <widget_course_profile v-else :course="$store.state.currentEntityInfo" :course_reviews="$store.state.currentEntityReviews" :infoRequested='$store.state.requestedEntityInfo'></widget_course_profile>
+    </template>
     </v-dialog>
   </div>
 </template>
@@ -100,9 +105,6 @@ export default {
       entity: {},
       search_params: null,
       search_items: [],
-      entityInfo: {},
-      entity_reviews: [],
-      entityInfoRequested: false,
     }
   },
   methods: {
@@ -114,27 +116,42 @@ export default {
         const Response = await this.$axios.get(`/api/v1/search?name=${search_params}`)
         this.search_items = Response.data
       },
-    async getEntityInfo(id, type) {
-      this.entityInfoRequested = false
+    async getEntityInfo() {
+      if (this.entity == undefined) {
+          this.entity = { id: '', type: ''}
+      }
+      let id = this.entity.id
+      let type = this.entity.type
+
+      this.$store.commit('changeRequestedEntityInfo', false);
       let path = undefined
       if (type == 'teacher') {
+        this.$store.commit('changeCurrentEntityType', type)
         path = 'teachers'
-      } else {
+      } else if (type == 'course') {
         path = 'courses'
+        this.$store.commit('changeCurrentEntityType', type)
       }
       if (path != undefined){
         const Response = await this.$axios.get(`/api/v1/${path}/${id}`)
-        this.entityInfo = Response.data
+        this.$store.commit('changeEntityInfo',Response.data)
         if (type == 'teacher') {
           const ReviewsResponse = await this.$axios.get(`/api/v1/teacher_reviews/teacher/${id}`)
-          this.entity_reviews = ReviewsResponse.data
+          this.$store.commit('changeEntityReviews',ReviewsResponse.data)
         } else {
           const ReviewsResponse = await this.$axios.get(`/api/v1/course_reviews/course/${id}`)
-          this.entity_reviews = ReviewsResponse.data
+          this.$store.commit('changeEntityReviews',ReviewsResponse.data)
         }
-      this.entityInfoRequested = true
+      this.$store.commit('changeRequestedEntityInfo', true);
       }
     },
+    closeAndCleanUpEntity() {
+        this.$store.commit('changeEntityInfo', [])
+        this.$store.commit('changeEntityReviews', [])
+        this.$store.commit('changeRequestedEntityInfo', false)
+        this.$store.commit('changeCurrentEntityType', null)
+        this.$store.commit('closeProfile')
+      },
   },
 
 }

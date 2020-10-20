@@ -283,21 +283,43 @@
 
       },
       async createTeacherReview(data) {
+        this.$store.commit('changeLoaderState', true)
         this.$store.commit('closeReviewsForm')
         try {
           const response = await this.$axios.post('/api/v1/teacher_reviews', data)
+          this.$store.commit('changeLoaderState', false)
+          this.teacherReviewInfo = {
+              rating: 3,
+              teacher_id: null,
+              course_id: null,
+              general_comment: '',
+              positive_comment: '',
+              negative_comment: '',
+            }
           this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
         } catch(error) {
           this.$notifier.showMessage({ content: 'Error', color: 'red' })
+          this.$store.commit('changeLoaderState', false)
         }
     },
       async createCourseReview(data) {
+        this.$store.commit('changeLoaderState', true)
         this.$store.commit('closeReviewsForm')
         try {
             const response = await this.$axios.post('/api/v1/course_reviews', data)
+            this.courseReviewInfo = {
+              rating: 3,
+              course_id: null,
+              general_comment: '',
+              positive_comment: '',
+              negative_comment: '',
+              recommended: true
+            }
+            this.$store.commit('changeLoaderState', false)
             this.$notifier.showMessage({ content: 'Exito!', color: 'success' })
           } catch(error) {
             this.$notifier.showMessage({ content: 'Error', color: 'red' })
+            this.$store.commit('changeLoaderState', false)
           }
       },
     }
