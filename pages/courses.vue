@@ -30,6 +30,15 @@
         clearable>
         </v-autocomplete>
       </v-col>
+
+      <v-col>
+        <h6>Sigla</h6>
+        <v-text-field
+          clearable
+          v-model="searchParams.acronym"
+          placeholder="ejemplo: MAT1610"
+        ></v-text-field>
+      </v-col>
     </v-row>
 
     <v-row class="px-6">
@@ -46,7 +55,7 @@
         hide-details
         no-data-text="Sin entradas..."
         :items="autoCompleteItems.schools"
-        label="Nombre ramo">
+        label="Nombre escuela">
         </v-autocomplete>
       </v-col>
 
@@ -63,7 +72,7 @@
         hide-details
         no-data-text="Sin entradas..."
         :items="autoCompleteItems.faculties"
-        label="Nombre ramo">
+        label="Nombre facultad">
         </v-autocomplete>
       </v-col>
     </v-row>
@@ -72,6 +81,7 @@
     <v-row>
       <v-col>
         <b-table
+          :busy='!indexRequested'
           ref="table"
           id="courses-table"
           striped
@@ -84,6 +94,12 @@
           :per-page="perPage"
           :current-page="currentPage"
           >
+          <template #table-busy>
+            <div class="text-center my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong>Cargando...</strong>
+            </div>
+          </template>
           <template v-slot:cell(show_profile)="row">
             <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
               Mostrar
@@ -127,6 +143,7 @@ export default {
   },
   data() {
     return {
+      indexRequested: false,
       requestedCourseInfo: false,
       showProfile: false,
       course: {},
@@ -135,6 +152,11 @@ export default {
           {
             key: 'global_rating',
             label: 'Nota',
+            sortable: true,
+          },
+          {
+            key: 'acronym',
+            label: 'Sigla',
             sortable: true,
           },
           {
@@ -151,7 +173,8 @@ export default {
       searchParams: {
         school_id: undefined,
         faculty_id: undefined,
-        rating: {}
+        rating: {},
+        acronym: undefined
       },
       perPage: 7,
       currentPage: 1,
@@ -164,6 +187,7 @@ export default {
   },
   methods: {
       async updateCourses() {
+        this.indexRequested = false
         this.$store.commit('changeLoaderState', true)
         if (this.searchParams.rating == undefined) {
           this.searchParams.rating = {}
@@ -175,10 +199,12 @@ export default {
             faculty_id: this.searchParams.faculty_id,
             rating_max: this.searchParams.rating.max,
             rating_min: this.searchParams.rating.min,
+            acronym: this.searchParams.acronym
           }
         })
         this.$store.commit('changeLoaderState', false)
         this.autoCompleteItems.courses = response.data
+        this.indexRequested = true
       },
       async getCourseInfo(id) {
           this.$store.commit('changeRequestedEntityInfo', false);
@@ -208,6 +234,8 @@ export default {
         // Faculties
         const facultiesResponse = await this.$axios.get(`/api/v1/faculties`)
         this.autoCompleteItems.faculties = facultiesResponse.data
+
+        this.indexRequested = true
       },
     },
 }

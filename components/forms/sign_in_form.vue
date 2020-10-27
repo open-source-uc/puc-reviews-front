@@ -40,23 +40,15 @@
             >
             Iniciar
           </v-btn>
+          <v-btn
+              to="/"
+              class="mr-4"
+              color="red"
+              >
+              Cancelar
+            </v-btn>
           </v-col>
         </v-row>
-
-        <!-- <v-row>
-          <v-col>
-            <v-btn
-            class="mr-4"
-            color="red"
-            @click="$auth.loginWith('google')"
-            >
-            Continuar con
-             <v-icon class="ml-2">
-              mdi-google
-            </v-icon>
-          </v-btn>
-          </v-col>
-        </v-row> -->
       </v-container>
     </v-form>
   </v-card>

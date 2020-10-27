@@ -38,7 +38,9 @@
                   @keydown="getItems(search_params)">
                 </v-autocomplete>
                 <b-button class="ml-2"
-                @click="$store.commit('openProfile')" :disabled="Object.entries($store.state.currentEntityInfo).length == 0"><v-icon>mdi-magnify</v-icon></b-button>
+                @click="$store.commit('openProfile')" :disabled="Object.entries($store.state.currentEntityInfo).length == 0">
+                  <v-icon>mdi-magnify</v-icon>
+                </b-button>
             </b-nav-form>
 
 
@@ -58,7 +60,7 @@
           <!-- IF NOT LOGGED IN  -->
             <template v-else>
               <b-nav-item><NuxtLink to="/sign_up"><button class="btn btn-success">Registrarse</button></NuxtLink></b-nav-item>
-            <b-nav-item><NuxtLink to="/"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item>
+            <b-nav-item><NuxtLink to="/login"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item>
             </template>
         </b-navbar-nav>
 

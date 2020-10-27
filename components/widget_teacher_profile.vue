@@ -30,9 +30,30 @@
                  <h6><v-icon>mdi-notebook</v-icon> Ramos</h6>
                 <b-table
                 :items="teacher.courses"
-                :fields="coursesFields">
+                :fields="coursesFields"
+                show-empty
+                responsive
+                ref="table"
+                id="courses-table">
+                <template v-slot:cell(show_profile)="row">
+                  <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
+                    Mostrar
+                  </b-button>
+                </template>
+
+                <template v-slot:empty>
+                  <center><h5>No se encontraron profesores.</h5></center>
+                </template>
                 </b-table>
+                <b-pagination
+                  class="mx-auto"
+                  v-model="currentPage"
+                  :total-rows="rows"
+                  :per-page="perPage"
+                  aria-controls="courses-table"
+                  ></b-pagination>
               </v-row>
+
             </v-col>
 
             <v-col>
@@ -110,6 +131,11 @@ export default {
   components: {
     widget_review_list
   },
+  computed: {
+      rows() {
+        return this.teacher.courses.length
+      }
+  },
   props: {
     infoRequested: {
       type: Boolean,
@@ -153,15 +179,45 @@ export default {
       },
       resetFilteredReviews() {
         this.filteredReviews = []
-      }
+      },
+      async getCourseInfo(id) {
+          this.$store.commit('changeRequestedEntityInfo', false);
+
+          this.$store.commit('changeCurrentEntityType', 'course')
+          const courseResponse = await this.$axios.get(`/api/v1/courses/${id}/`)
+          this.$store.commit('changeEntityInfo', courseResponse.data);
+
+          const reviewsResponse = await this.$axios.get(`/api/v1/course_reviews/course/${id}/`)
+          this.$store.commit('changeEntityReviews', reviewsResponse.data);
+
+          this.$store.commit('changeRequestedEntityInfo', true);
+      },
+      async openProfile(new_id) {
+        this.$store.commit('changeLoaderState', true);
+        await this.getCourseInfo(new_id);
+        this.$store.commit('openProfile');
+        this.$store.commit('changeLoaderState', false);
+      },
     },
   data() {
     return {
+      perPage: 5,
+      currentPage: 1,
       filteredReviews: [],
       coursesFields: [
           {
+            key: 'acronym',
+            label: 'SIG',
+            sortable: true,
+          },
+          {
             key: 'name',
             label: 'Nombre ramo',
+            sortable: true,
+          },
+          {
+            key: 'show_profile',
+            label: 'Perfil',
             sortable: true,
           },
       ]

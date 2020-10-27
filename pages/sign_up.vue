@@ -2,7 +2,6 @@
   <v-app  loading>
     <v-card
       class="mx-auto mt-6 pa-6"
-      style="width: 50%;"
       max-width="800"
     >
       <h3 class="pt-2">Registro</h3>

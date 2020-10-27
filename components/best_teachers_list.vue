@@ -2,6 +2,7 @@
 <v-app>
   <v-card
   class="pa-2"
+  style="text-align: center;"
   :max-width="$vuetify.breakpoint.width">
 
   <v-chip
@@ -15,7 +16,8 @@
     {{title}}
   </v-chip>
   <v-container>
-    <v-row dense>
+    <v-row v-if="teachers.length != 0" dense
+    style="text-align: left;">
       <v-col
         :cols="$vuetify.breakpoint.mobile? null : '4'"
         v-for="(item, i) in teachers"
@@ -59,6 +61,13 @@
             </div>
           </div>
         </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row v-else>
+      <v-col>
+       <h6>Sin reseñas todavia <v-icon>mdi-emoticon-sad-outline</v-icon></h6><br>
+       <h6>Inicie Sesión y agregue alguna!</h6>
       </v-col>
     </v-row>
   </v-container>

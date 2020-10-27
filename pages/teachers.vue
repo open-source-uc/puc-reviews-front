@@ -21,6 +21,14 @@
     <template v-if="showFilters">
     <v-row class="pa-6">
       <v-col>
+        <h6>Nombre</h6>
+        <v-text-field
+          clearable
+          v-model="searchParams.teacher_name"
+          placeholder="nombre"
+        ></v-text-field>
+      </v-col>
+      <v-col>
         <h6>Nota</h6>
         <v-autocomplete
         v-model="searchParams.rating"
@@ -28,22 +36,6 @@
         item-text="name"
         item-value="value"
         clearable>
-        </v-autocomplete>
-      </v-col>
-      <v-col>
-        <h6>Ramo</h6>
-        <v-autocomplete
-        :disabled="(searchParams.faculty_id != undefined) || (searchParams.school_id != undefined)"
-        v-model="searchParams.course_id"
-        item-text="name"
-        item-value="id"
-        clearable
-        solo
-        flat
-        hide-details
-        no-data-text="Sin entradas..."
-        :items="autoCompleteItems.courses"
-        label="Nombre ramo">
         </v-autocomplete>
       </v-col>
     </v-row>
@@ -62,7 +54,7 @@
         hide-details
         no-data-text="Sin entradas..."
         :items="autoCompleteItems.schools"
-        label="Nombre ramo">
+        label="Nombre escuela">
         </v-autocomplete>
       </v-col>
 
@@ -79,7 +71,7 @@
         hide-details
         no-data-text="Sin entradas..."
         :items="autoCompleteItems.faculties"
-        label="Nombre ramo">
+        label="Nombre facultad">
         </v-autocomplete>
       </v-col>
     </v-row>
@@ -88,6 +80,7 @@
     <v-row>
       <v-col>
         <b-table
+          :busy='!indexRequested'
           ref="table"
           id="teachers-table"
           striped
@@ -100,6 +93,12 @@
           :per-page="perPage"
           :current-page="currentPage"
           >
+          <template #table-busy>
+            <div class="text-center my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong>Cargando...</strong>
+            </div>
+          </template>
           <template v-slot:cell(show_profile)="row">
             <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
               Mostrar
@@ -140,10 +139,11 @@ export default {
   },
   data: function(){
     return{
+      indexRequested: false,
       showFilters: false,
       requestedTeacherInfo: false,
       searchParams: {
-        course_id: undefined,
+        teacher_name: undefined,
         school_id: undefined,
         faculty_id: undefined,
         rating: {}
@@ -151,7 +151,6 @@ export default {
       perPage: 7,
       currentPage: 1,
       autoCompleteItems: {
-        courses: [],
         schools: [],
         faculties: [],
         teachers: [],
@@ -180,6 +179,7 @@ export default {
   },
   methods: {
       async updateTeachers() {
+        this.indexRequested = false
         this.$store.commit('changeLoaderState', true)
         if (this.searchParams.rating == undefined) {
           this.searchParams.rating = {}
@@ -187,7 +187,7 @@ export default {
         const response = await this.$axios.get(`/api/v1/search_teachers`,
         {
           params: {
-            course_id: this.searchParams.course_id,
+            teacher_name: this.searchParams.teacher_name,
             school_id: this.searchParams.school_id,
             faculty_id: this.searchParams.faculty_id,
             rating_max: this.searchParams.rating.max,
@@ -196,6 +196,7 @@ export default {
         })
         this.$store.commit('changeLoaderState', false)
         this.autoCompleteItems.teachers = response.data
+        this.indexRequested = true
       },
       async getTeacherInfo(id) {
           this.$store.commit('changeRequestedEntityInfo', false);
@@ -219,27 +220,16 @@ export default {
         // Teachers
         const teachersResponse = await this.$axios.get(`/api/v1/teachers`)
         this.autoCompleteItems.teachers = teachersResponse.data
-        // Courses
-        const coursesResponse = await this.$axios.get(`/api/v1/courses`)
-        this.autoCompleteItems.courses = coursesResponse.data
+
         // Schools
         const schoolsResponse = await this.$axios.get(`/api/v1/schools`)
         this.autoCompleteItems.schools = schoolsResponse.data
         // Faculties
         const facultiesResponse = await this.$axios.get(`/api/v1/faculties`)
         this.autoCompleteItems.faculties = facultiesResponse.data
-      },
-      async openProfile(new_id) {
-        this.getTeacherInfo(new_id);
-        this.$store.commit('openProfile');
-      },
-      closeAndCleanUpEntity() {
-        this.$store.commit('changeEntityInfo', [])
-        this.$store.commit('changeEntityReviews', [])
-        this.$store.commit('changeRequestedEntityInfo', false)
-        this.$store.commit('changeCurrentEntityType', null)
-        this.$store.commit('closeProfile')
-      },
+
+        this.indexRequested = true
+      }
     },
 }
 </script>

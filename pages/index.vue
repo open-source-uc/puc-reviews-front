@@ -1,9 +1,6 @@
 <template>
   <v-app id="index">
     <v-row>
-      <v-col v-if="!$auth.loggedIn">
-        <sign_in_form ></sign_in_form>
-      </v-col>
       <v-col>
         <best_teachers_mobile_list :teachers='best_teachers' :requested='bestTeachersRequested'></best_teachers_mobile_list>
       </v-col>
@@ -19,7 +16,7 @@
 
 <script>
 import widget_review_list from "@/components/widget_review_list.vue"
-import sign_in_form from "@/components/forms/sign_in_form.vue"
+
 import best_teachers_mobile_list from "@/components/best_teachers_list.vue"
 
 export default {
@@ -28,7 +25,6 @@ export default {
   },
   components: {
     widget_review_list,
-    sign_in_form,
     best_teachers_mobile_list
   },
   data: function () {

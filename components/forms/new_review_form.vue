@@ -57,32 +57,50 @@
 
               <v-row>
                 <v-col>
-                  <h5>Profesor</h5>
+                  <h5>Profesor
+                  <v-progress-circular
+                  v-if="$store.state.loader"
+                  class="mx-auto"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
+                  </h5>
                   <v-autocomplete
-                  :disabled="(teachers.length == 0)"
+                  :disabled="$store.state.loader"
                   v-model="teacherReviewInfo.teacher_id"
                   filled
                   solo
+                  clearable
+                  :search-input.sync="teacher_name_search"
                   :items="teachers"
                   item-value="id"
                   item-text="name"
                   label="Profesor"
-                  @change="getTeacherCourses(teacherReviewInfo.teacher_id)">
+                  @change="getTeacherCourses(teacherReviewInfo.teacher_id)"
+                  @keydown="updateTeachers(teacher_name_search)">
                   </v-autocomplete>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <h5>Ramo que tomó con él</h5>
+                  <h5>Ramo que tomó con él
+                  <v-progress-circular
+                  v-if="$store.state.loader"
+                  class="mx-auto"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
+                  </h5>
                   <v-autocomplete
-                  :disabled="(teacher_courses.length == 0)"
+                  :disabled="$store.state.loader"
                   v-model="teacherReviewInfo.course_id"
+                  clearable
                   filled
                   solo
                   :items="teacher_courses"
                   item-value="id"
-                  item-text="name"
+                  item-text="autocomplete_name"
                   :rules="requiredField"
                   :label="teacher_courses.length == 0 ? 'Seleccione un profesor' : 'Ramo' ">
                   </v-autocomplete>
@@ -91,35 +109,38 @@
 
               <v-row>
                 <v-col>
-                  <h5>Comentario General</h5>
-                  <v-text-field
+                  <v-textarea
+                    label="Comentario General"
+                    auto-grow
+                    rows="1"
                     v-model="teacherReviewInfo.general_comment"
                     :rules="requiredField"
-                    label="comentario"
                     required>
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <h5>Cosas que hizo bien</h5>
-                  <v-text-field
+                  <v-textarea
+                    label="Cosas positivas"
+                    auto-grow
+                    rows="1"
                     v-model="teacherReviewInfo.positive_comment"
-                    label="pros"
                     >
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <h5>Cosas que hizo mal</h5>
-                  <v-text-field
+                  <v-textarea
+                    label="Cosas negativas"
+                    auto-grow
+                    rows="1"
                     v-model="teacherReviewInfo.negative_comment"
-                    label="contras"
                     >
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
@@ -168,48 +189,64 @@
 
               <v-row>
                 <v-col>
-                  <h5>Ramo</h5>
+                  <h5>Ramo
+                    <v-progress-circular
+                    v-if="$store.state.loader"
+                    class="mx-auto"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
+                  </h5>
                   <v-autocomplete
-                  :disabled="(courses.length == 0)"
+                  :disabled="$store.state.loader"
                   v-model="courseReviewInfo.course_id"
                   filled
                   solo
+                  clearable
+                  :search-input.sync="course_name_search"
                   :items="courses"
                   item-value="id"
-                  item-text="name"
-                  label="Ramo">
+                  item-text="autocomplete_name"
+                  label="Ramo"
+                  @keydown="updateCourses(course_name_search)">
                   </v-autocomplete>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <v-text-field
+                  <v-textarea
+                    auto-grow
+                    rows="1"
                     v-model="courseReviewInfo.general_comment"
                     :rules="requiredField"
                     label="Comentario General"
                     required>
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <v-text-field
+                  <v-textarea
+                    auto-grow
+                    rows="1"
                     v-model="courseReviewInfo.positive_comment"
                     label="Cosas positivas"
                     >
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
-                  <v-text-field
+                  <v-textarea
+                    auto-grow
+                    rows="1"
                     v-model="courseReviewInfo.negative_comment"
                     label="Cosas negativas"
                     >
-                  </v-text-field>
+                  </v-textarea>
                 </v-col>
               </v-row>
 
@@ -268,14 +305,18 @@
         positive_comment: '',
         negative_comment: '',
         recommended: true
-      }
+      },
+      teacher_name_search: undefined,
+      course_name_search: undefined
     }),
     methods: {
       async setOptions() {
+          this.$store.commit('changeLoaderState', true)
           const teacherResponse = await this.$axios.get(`/api/v1/teachers`)
           this.teachers = teacherResponse.data
           const courseResponse = await this.$axios.get(`/api/v1/courses`)
           this.courses = courseResponse.data
+          this.$store.commit('changeLoaderState', false)
       },
       async getTeacherCourses(teacher_id) {
           const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses/${teacher_id}`)
@@ -321,6 +362,25 @@
             this.$notifier.showMessage({ content: 'Error', color: 'red' })
             this.$store.commit('changeLoaderState', false)
           }
+      },
+      async updateTeachers() {
+        const response = await this.$axios.get(`/api/v1/search_teachers`,
+        {
+          params: {
+            teacher_name: this.teacher_name_search
+          }
+        })
+        this.teachers = response.data
+
+      },
+      async updateCourses() {
+        const response = await this.$axios.get(`/api/v1/search_courses`,
+        {
+          params: {
+            course_name: this.course_name_search
+          }
+        })
+        this.courses = response.data
       },
     }
   }
