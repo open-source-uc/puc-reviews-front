@@ -8,7 +8,7 @@
         cols="12"
       >
         <v-btn icon
-        :href="`https://wa.me/?text=Checkout%20this%20page.%20${baseUrl}`"><v-icon color="black">mdi-whatsapp</v-icon></v-btn>
+        :href="`https://wa.me/?text=Mira%20esta%20página!%20${baseUrl}`"><v-icon color="black" target="_blank">mdi-whatsapp</v-icon></v-btn>
         <v-btn icon
         :href="`https://www.facebook.com/sharer/sharer.php?u=${baseUrl}`" target="_blank"><v-icon color="black">mdi-facebook</v-icon></v-btn>
       </v-col>
@@ -19,7 +19,7 @@
 export default {
   data: function(){
     return{
-      baseUrl: process.env.baseUrl
+      baseUrl: window.location.origin
     }
   }
 
