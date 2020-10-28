@@ -132,7 +132,9 @@ export default {
   },
   computed: {
       rows() {
-        return this.course.teachers.length
+        if (this.course.teachers){
+          return this.course.teachers.length
+        }
       }
   },
   props: {

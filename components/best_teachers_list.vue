@@ -41,7 +41,7 @@
               dense
               length="7"
               readonly
-              size="15"
+              :size="$vuetify.breakpoint.mobile? '15' : '22'"
               background-color="yellow"
               color="yellow">
               </v-rating>
