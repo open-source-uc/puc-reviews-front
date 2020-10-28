@@ -76,7 +76,7 @@
                   item-value="id"
                   item-text="name"
                   label="Profesor"
-                  @change="getTeacherCourses(teacherReviewInfo.teacher_id)"
+                  @change="getTeacherCourses"
                   @keydown="updateTeachers(teacher_name_search)">
                   </v-autocomplete>
                 </v-col>
@@ -93,7 +93,7 @@
                   ></v-progress-circular>
                   </h5>
                   <v-autocomplete
-                  :disabled="$store.state.loader"
+                  :disabled="!teacherReviewInfo.teacher_id"
                   v-model="teacherReviewInfo.course_id"
                   clearable
                   filled
@@ -278,9 +278,6 @@
 <script>
   export default {
     props: ['width', 'height'],
-    mounted() {
-      this.setOptions()
-    },
     data: () => ({
       tab: null,
       teachers: [],
@@ -310,16 +307,11 @@
       course_name_search: undefined
     }),
     methods: {
-      async setOptions() {
-          this.$store.commit('changeLoaderState', true)
-          const teacherResponse = await this.$axios.get(`/api/v1/teachers`)
-          this.teachers = teacherResponse.data
-          const courseResponse = await this.$axios.get(`/api/v1/courses`)
-          this.courses = courseResponse.data
-          this.$store.commit('changeLoaderState', false)
-      },
-      async getTeacherCourses(teacher_id) {
-          const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses/${teacher_id}`)
+      async getTeacherCourses() {
+        if (this.teacherReviewInfo.teacher_id == undefined) {
+          this.teacherReviewInfo.teacher_id = null
+        }
+          const teacherCoursesResponse = await this.$axios.get(`/api/v1/teachers/courses/${this.teacherReviewInfo.teacher_id}`)
           this.teacher_courses = teacherCoursesResponse.data
 
       },
@@ -381,7 +373,7 @@
           }
         })
         this.courses = response.data
-      },
+      }
     }
   }
 </script>
