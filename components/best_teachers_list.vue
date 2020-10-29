@@ -37,6 +37,7 @@
               ></v-card-title>
               <v-rating
               v-model="item.rating"
+              half-increments
               class="ml-2"
               dense
               length="7"

@@ -36,7 +36,7 @@
         <template v-else>
           <template v-if="$vuetify.breakpoint.width > 800">
             <v-row class="px-6 mx-6">
-              <center><h6 class="mt-2">Sugiere un nombre!</h6></center>
+              <center><h6 class="mt-2">Sugiere un nuevo nombre para esta plataforma!</h6></center>
             </v-row>
 
             <v-row class="pb-6 mx-6">
@@ -151,7 +151,7 @@
                   fab
                   dark
                   color="light-blue accent-4"
-                  :href="emailUrl" target="_blank"
+                  :href="colaborateEmailUrl()" target="_blank"
                 >
                   <v-icon dark>
                     mdi-email
@@ -190,7 +190,6 @@ export default {
       githubUrl: 'https://github.com/puc-reviews',
       whatsappUrl: `https://wa.me/?text=Mira%20esta%20página!%20${window.location.origin}`,
       facebookUrl: `https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`,
-      emailUrl: 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Reseñas PUC',
     }
   },
   methods: {
@@ -204,7 +203,18 @@ export default {
       }
     },
     proposedNameUrl() {
-      return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Nombre Reseñas PUC&body=${this.proposedName}`
+      if (this.$vuetify.breakpoint.mobile) {
+        return `mailto:aenrione@uc.cl?subject=Nombre%20Reseñas%20PUC&body=${this.proposedName}`
+      } else {
+        return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Nombre Reseñas PUC&body=${this.proposedName}`
+      }
+    },
+    colaborateEmailUrl() {
+      if (this.$vuetify.breakpoint.mobile) {
+        return `mailto:aenrione@uc.cl?subject=Colaboración%20Reseñas%20PUC`
+      } else {
+        return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Colaboración Reseñas PUC`
+      }
     }
   }
 }

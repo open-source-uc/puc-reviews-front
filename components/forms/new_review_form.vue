@@ -55,6 +55,10 @@
                 </v-col>
               </v-row>
 
+              <v-row class="my-6 mx-auto" v-if="teacherReviewInfo.rating == 0">
+                <h6 class="red--text">Ingrese una nota valida!</h6>
+              </v-row>
+
               <v-row>
                 <v-col>
                   <h5>Profesor
@@ -147,7 +151,7 @@
               <v-row>
                 <v-col>
                   <v-btn
-                  :disabled="!valid"
+                  :disabled="!valid || teacherReviewInfo.rating == 0"
                   class="mr-4"
                   color="success"
                   @click="createTeacherReview(teacherReviewInfo)"
@@ -185,6 +189,10 @@
                   required>
                   </v-rating>
                 </v-col>
+              </v-row>
+
+              <v-row class="my-6 mx-auto" v-if="courseReviewInfo.rating == 0">
+                <h6 class="red--text">Ingrese una nota valida!</h6>
               </v-row>
 
               <v-row>
@@ -253,7 +261,7 @@
               <v-row>
                 <v-col class="mt-6">
                   <v-btn
-                  :disabled="!valid"
+                  :disabled="!valid || courseReviewInfo.rating == 0"
                   class="mr-4"
                   color="success"
                   @click="createCourseReview(courseReviewInfo)"
@@ -288,7 +296,7 @@
         v => !!v || 'Campo requerido',
       ],
       teacherReviewInfo: {
-        rating: 3,
+        rating: 0,
         teacher_id: null,
         course_id: null,
         general_comment: '',
@@ -296,7 +304,7 @@
         negative_comment: '',
       },
       courseReviewInfo: {
-        rating: 3,
+        rating: 0,
         course_id: null,
         general_comment: '',
         positive_comment: '',
@@ -322,7 +330,7 @@
           const response = await this.$axios.post('/api/v1/teacher_reviews', data)
           this.$store.commit('changeLoaderState', false)
           this.teacherReviewInfo = {
-              rating: 3,
+              rating: 0,
               teacher_id: null,
               course_id: null,
               general_comment: '',
@@ -341,7 +349,7 @@
         try {
             const response = await this.$axios.post('/api/v1/course_reviews', data)
             this.courseReviewInfo = {
-              rating: 3,
+              rating: 0,
               course_id: null,
               general_comment: '',
               positive_comment: '',
@@ -373,7 +381,7 @@
           }
         })
         this.courses = response.data
-      }
+      },
     }
   }
 </script>

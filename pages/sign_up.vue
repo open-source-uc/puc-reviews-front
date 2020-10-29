@@ -21,19 +21,6 @@
           <v-row>
             <v-col>
               <v-text-field
-                v-model="userInfo.student_number"
-                :rules="requiredField"
-                :counter="15"
-                type="number"
-                label="Numero de estudiante"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <v-text-field
                 v-model="userInfo.email"
                 :rules="emailRules"
                 label="Mail UC"
@@ -103,7 +90,6 @@
       view_conf_pws: false,
       userInfo: {
         name: '',
-        student_number: '',
         email: '',
         password:'',
         password_confirmation: ''
