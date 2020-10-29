@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand to="/"><v-icon>mdi-star</v-icon>PUC</b-navbar-brand>
+      <b-navbar-brand to="/"><v-icon color="white">mdi-star-circle </v-icon>INICIO</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -15,11 +15,11 @@
         <b-navbar-nav class="ml-auto">
             <b-nav-item v-if="$auth.loggedIn && $auth.user.role != 'student'" to='/forms'>
               <button class="btn btn-primary" >
-                <v-icon dark>mdi-plus</v-icon> FORMS
+                <v-icon dark>mdi-plus-circle</v-icon> FORMS
               </button>
             </b-nav-item>
 
-            <b-nav-form>
+            <b-nav-form v-if="$route.name != 'index'">
               <v-autocomplete
                   style="width: 200px;"
                   v-model="entity"
@@ -34,12 +34,26 @@
                   item-text="name"
                   label="Buscar"
                   clearable
+                  @click:clear='closeAndCleanUpEntity'
                   @change="getEntityInfo"
                   @keydown="getItems(search_params)">
                 </v-autocomplete>
-                <b-button class="ml-2"
-                @click="$store.commit('openProfile')" :disabled="Object.entries($store.state.currentEntityInfo).length == 0">
-                  <v-icon>mdi-magnify</v-icon>
+                <b-button
+                class="ml-2"
+                v-if="Object.entries($store.state.currentEntityInfo).length == 0"
+                size="sm"
+                variant="secondary"
+                @click="showInstructions"
+                >
+                  <v-icon size="30">mdi-account-search</v-icon>
+                </b-button>
+                <b-button
+                  v-else
+                  class="ml-2"
+                  size="sm"
+                  variant="primary"
+                  @click="$store.commit('openProfile')">
+                      <v-icon size="30">mdi-account-check</v-icon>
                 </b-button>
             </b-nav-form>
 
@@ -47,7 +61,7 @@
             <template v-if="$auth.loggedIn">
             <b-nav-item>
               <button class="btn btn-success" @click="$store.commit('openReviewsForm')">
-                <v-icon dark>mdi-plus</v-icon> Reseña
+                <v-icon dark>mdi-plus-circle</v-icon> Reseña
               </button>
             </b-nav-item>
 
@@ -154,6 +168,9 @@ export default {
         this.$store.commit('changeCurrentEntityType', null)
         this.$store.commit('closeProfile')
       },
+    showInstructions() {
+      this.$notifier.showMessage({ content: 'Seleccione algo para ver su perfil', color: 'primary' })
+    }
   },
 
 }

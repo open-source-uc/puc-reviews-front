@@ -4,6 +4,7 @@
     <v-card
     class="mx-auto mt-6"
     width="1000">
+    <v-container>
     <v-row class="ml-2">
         <v-col><h4>Filtros</h4>
         <v-btn class="mr-4" color="primary"
@@ -59,7 +60,7 @@
       </v-col>
 
       <v-col>
-        <h6>Facultdad</h6>
+        <h6>Facultad</h6>
         <v-autocomplete
         :disabled="(searchParams.course_id != undefined) || (searchParams.school_id != undefined)"
         v-model="searchParams.faculty_id"
@@ -106,7 +107,8 @@
           </template>
 
           <template v-slot:empty>
-            <center><h5>No se encontraron profesores.</h5></center>
+            <center><h5>Nada para mostrar. </h5></center>
+            <center>Introduce campos para comenzar la busqueda</center>
           </template>
         </b-table>
       </v-col>
@@ -120,6 +122,7 @@
         aria-controls="teachers-table"
       ></b-pagination>
     </v-row>
+    </v-container>
 
     </v-card>
   </v-app>
@@ -140,7 +143,7 @@ export default {
   data: function(){
     return{
       indexRequested: false,
-      showFilters: false,
+      showFilters: true,
       requestedTeacherInfo: false,
       searchParams: {
         teacher_name: undefined,
@@ -217,10 +220,6 @@ export default {
         this.$store.commit('changeLoaderState', false);
       },
       async getAutoCompleteItems() {
-        // Teachers
-        const teachersResponse = await this.$axios.get(`/api/v1/teachers`)
-        this.autoCompleteItems.teachers = teachersResponse.data
-
         // Schools
         const schoolsResponse = await this.$axios.get(`/api/v1/schools`)
         this.autoCompleteItems.schools = schoolsResponse.data

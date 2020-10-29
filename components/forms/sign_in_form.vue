@@ -3,7 +3,7 @@
     class="mx-auto mt-6 pa-4"
     max-width="400"
   >
-  <h1>Iniciar Sesión</h1>
+  <h3 class="pt-2">Iniciar Sesión</h3>
     <v-form v-model="valid">
       <v-container>
         <v-row>
