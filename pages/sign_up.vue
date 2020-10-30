@@ -83,6 +83,7 @@
 
 
   export default {
+    middleware: ['only_oauth'],
     data: () => ({
       valid: false,
       loading: false,

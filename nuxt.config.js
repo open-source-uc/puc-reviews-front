@@ -3,6 +3,9 @@ export default {
     port: process.env.PORT || 8000
   },
   ssr: false,
+  env: {
+    google_client_id: process.env.BASE_URL || 'http://localhost:3000'
+  },
   head: {
     title: 'Reseñas PUC',
     meta: [
@@ -35,9 +38,9 @@ export default {
           },
           tokenRequired: true,
         },
-      //   google: {
-      //   client_id:
-      //  },
+        google: {
+        client_id: process.env.GOOGLE_CLIENT_ID || '682162585296-hrpuv5n8pgh1rt3mmgq6e52vqhe8h9iq.apps.googleusercontent.com'
+       },
       }
     },
     axios: {

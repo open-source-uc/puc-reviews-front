@@ -12,7 +12,6 @@
 
     <b-button block variant="dark" @click="$router.push('/courses')"><v-icon dark class="mr-2">mdi-notebook</v-icon>Encuentra tus ramos!</b-button>
 
-    <b-button v-if="$auth.loggedIn" block variant="success" @click="$store.commit('openReviewsForm')"><v-icon dark class="mr-2">mdi-plus-circle</v-icon>Crea una reseña!</b-button>
     <v-divider></v-divider>
     <v-row>
       <v-col>
