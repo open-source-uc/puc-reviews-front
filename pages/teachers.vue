@@ -15,7 +15,7 @@
         <v-col>
           <v-btn class="mr-4" color="primary"
           @click="updateTeachers">
-          Aplicar Filtro<v-icon>mdi-magnify</v-icon>
+          Buscar<v-icon>mdi-magnify</v-icon>
           </v-btn>
         </v-col>
     </v-row>
@@ -30,7 +30,7 @@
         ></v-text-field>
       </v-col>
       <v-col>
-        <h6>Nota</h6>
+        <h6>Rango de nota</h6>
         <v-autocomplete
         v-model="searchParams.rating"
         :items="$store.state.ratingIntervals"

@@ -21,7 +21,7 @@
         align="center"
         justify="center"
         class="pa-6 mx-auto">
-          <center><h6 class="headline">Guía tu proxima toma de ramos con esta plataforma de reseñas universtiarias!</h6></center>
+          <center><h6 class="headline">Guía tu próxima toma de ramos con esta plataforma de reseñas universitarias!</h6></center>
         </v-row>
         <v-divider></v-divider>
         <v-row class="pa-6"
@@ -39,7 +39,7 @@
           align="center"
           justify="center"
           class="px-6 mx-auto">
-             <center><h6 class="headline">Parte añadiendo una reseña!</h6></center>
+             <center><h6 class="headline">Comienza añadiendo una reseña!</h6></center>
           </v-row>
         <b-button block variant="success" @click="$store.commit('openReviewsForm')"><v-icon dark class="mr-2">mdi-plus-circle</v-icon>Crea una reseña!</b-button>
         </template>
@@ -132,7 +132,7 @@
         >
           <v-col class="pa-6" align="center">
             <v-row>
-              <h6 class="display-1 mx-auto pb-6" >¡Compartenos!</h6>
+              <h6 class="display-1 mx-auto pb-6">¡Compártenos!</h6>
             </v-row>
             <v-row>
               <h6 class="body-1">Comparte la plataforma con más estudiantes para poder seguir creciendo.</h6>

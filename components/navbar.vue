@@ -7,8 +7,8 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/teachers"><v-icon>mdi-human-greeting</v-icon>Profesores</b-nav-item>
-          <b-nav-item to="/courses"><v-icon>mdi-pencil</v-icon>Ramos</b-nav-item>
+          <b-nav-item to="/teachers"><v-icon>mdi-human-greeting</v-icon>Busca Profesores</b-nav-item>
+          <b-nav-item to="/courses"><v-icon>mdi-pencil</v-icon>Busca Ramos</b-nav-item>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <!-- IF LOGGED IN  -->
