@@ -379,6 +379,7 @@
         this.$store.commit('closeReviewsForm')
         try {
           const response = await this.$axios.post('/api/v1/teacher_reviews', data)
+          await this.getEntityInfo(data.teacher_id, 'teacher')
           this.$store.commit('changeLoaderState', false)
           this.teacherReviewInfo = {
               rating: 0,
@@ -401,6 +402,7 @@
         this.$store.commit('closeReviewsForm')
         try {
             const response = await this.$axios.post('/api/v1/course_reviews', data)
+            await this.getEntityInfo(data.course_id, 'course')
             this.courseReviewInfo = {
               rating: 0,
               course_id: null,
@@ -434,6 +436,31 @@
           }
         })
         this.courses = response.data
+      },
+      async getEntityInfo(id, type) {
+
+        this.$store.commit('changeRequestedEntityInfo', false);
+        let path = undefined
+        if (type == 'teacher') {
+          this.$store.commit('changeCurrentEntityType', type)
+          path = 'teachers'
+        } else if (type == 'course') {
+          path = 'courses'
+          this.$store.commit('changeCurrentEntityType', type)
+        }
+        if (path != undefined){
+          const Response = await this.$axios.get(`/api/v1/${path}/${id}`)
+          this.$store.commit('changeEntityInfo',Response.data)
+          if (type == 'teacher') {
+            const ReviewsResponse = await this.$axios.get(`/api/v1/teacher_reviews/teacher/${id}`)
+            this.$store.commit('changeEntityReviews',ReviewsResponse.data)
+          } else {
+            const ReviewsResponse = await this.$axios.get(`/api/v1/course_reviews/course/${id}`)
+            this.$store.commit('changeEntityReviews',ReviewsResponse.data)
+          }
+        this.$store.commit('changeRequestedEntityInfo', true);
+        this.$store.commit('openProfile')
+        }
       },
     }
   }

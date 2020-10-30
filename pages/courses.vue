@@ -15,14 +15,25 @@
         <v-col>
           <v-btn class="mr-4" color="primary"
           @click="updateCourses">
-          Aplicar Filtro<v-icon>mdi-magnify</v-icon>
+          Buscar<v-icon>mdi-magnify</v-icon>
           </v-btn>
         </v-col>
     </v-row>
     <template v-if="showFilters">
+    <v-row class="px-6">
+      <v-col>
+        <h6>Nombre del ramo</h6>
+        <v-text-field
+          clearable
+          v-model="searchParams.course_name"
+          placeholder="ejemplo: Cálculo"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
     <v-row class="pa-6">
       <v-col>
-        <h6>Nota</h6>
+        <h6>Rango de nota</h6>
         <v-autocomplete
         v-model="searchParams.rating"
         :items="$store.state.ratingIntervals"
@@ -41,6 +52,8 @@
         ></v-text-field>
       </v-col>
     </v-row>
+
+
 
     <v-row class="px-6">
       <v-col>
@@ -176,7 +189,8 @@ export default {
         school_id: undefined,
         faculty_id: undefined,
         rating: {},
-        acronym: undefined
+        acronym: undefined,
+        course_name: undefined
       },
       perPage: 7,
       currentPage: 1,
@@ -201,7 +215,8 @@ export default {
             faculty_id: this.searchParams.faculty_id,
             rating_max: this.searchParams.rating.max,
             rating_min: this.searchParams.rating.min,
-            acronym: this.searchParams.acronym
+            acronym: this.searchParams.acronym,
+            name: this.searchParams.course_name
           }
         })
         this.$store.commit('changeLoaderState', false)
