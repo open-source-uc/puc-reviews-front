@@ -13,7 +13,7 @@
         <!-- Right aligned nav items -->
         <!-- IF LOGGED IN  -->
         <b-navbar-nav class="ml-auto">
-            <b-nav-item v-if="$auth.loggedIn && $auth.user.role != 'student'" to='/forms'>
+            <b-nav-item v-if="$auth.loggedIn && $auth.user.role == 'super_admin'" to='/forms'>
               <button class="btn btn-primary" >
                 <v-icon dark>mdi-plus-circle</v-icon> FORMS
               </button>

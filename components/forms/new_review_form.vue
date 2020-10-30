@@ -131,7 +131,7 @@
               <v-row>
                 <v-col>
                   <v-textarea
-                    label="Cosas positivas"
+                    label="Áspectos positivas"
                     auto-grow
                     rows="1"
                     counter="144"
@@ -144,7 +144,7 @@
               <v-row>
                 <v-col>
                   <v-textarea
-                    label="Cosas negativas"
+                    label="Áspectos negativas"
                     auto-grow
                     rows="1"
                     counter="144"
@@ -172,7 +172,7 @@
               <v-row>
                 <v-col>
                   <v-btn
-                  :disabled="!valid || teacherReviewInfo.rating == 0"
+                  :disabled="!valid || teacherReviewInfo.rating == 0 || $store.state.loader"
                   class="mr-4"
                   color="success"
                   @click="createTeacherReview(teacherReviewInfo)"
@@ -266,7 +266,7 @@
                     auto-grow
                     rows="1"
                     v-model="courseReviewInfo.positive_comment"
-                    label="Cosas positivas"
+                    label="Áspectos positivas"
                     counter="144"
                     >
                   </v-textarea>
@@ -279,7 +279,7 @@
                     auto-grow
                     rows="1"
                     v-model="courseReviewInfo.negative_comment"
-                    label="Cosas negativas"
+                    label="Áspectos negativas"
                     counter="144"
                     >
                   </v-textarea>
@@ -301,7 +301,7 @@
               <v-row>
                 <v-col class="mt-6">
                   <v-btn
-                  :disabled="!valid || courseReviewInfo.rating == 0"
+                  :disabled="!valid || courseReviewInfo.rating == 0 || $store.state.loader"
                   class="mr-4"
                   color="success"
                   @click="createCourseReview(courseReviewInfo)"
