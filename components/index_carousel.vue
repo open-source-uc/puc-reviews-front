@@ -7,7 +7,7 @@
     <v-carousel-item
     class="pa-6">
       <v-sheet
-        color="teal lighten-2"
+        color="blue-grey darken-1"
         height="100%"
       >
         <v-row
@@ -21,7 +21,7 @@
         align="center"
         justify="center"
         class="pa-6 mx-auto">
-          <center><h6 class="headline">Guía tu proxima toma de ramos!</h6></center>
+          <center><h6 class="headline">Guía tu proxima toma de ramos con esta plataforma de reseñas universtiarias!</h6></center>
         </v-row>
         <v-divider></v-divider>
         <v-row class="pa-6"
@@ -29,14 +29,37 @@
           justify="center"
           v-if="!$auth.loggedIn">
           <center><h6 class="mt-2">Para partir, inicia sesión para poder crear reseñas!</h6></center>
-         <b-button class="ml-6" variant="dark" @click="$router.push('/sign_up')">Registrarse</b-button>
-         <b-button class="ml-6" variant="primary" @click="$router.push('/login')">Iniciar Sesión</b-button>
+         <!-- <b-button class="ml-6" variant="dark" @click="$router.push('/sign_up')">Registrarse</b-button>
+         <b-button class="ml-6" variant="primary" @click="$router.push('/login')">Iniciar Sesión</b-button> -->
+         <b-button class="ml-6" variant="danger" @click="$auth.loginWith('google')"><v-icon>mdi-google</v-icon> Continuar con mail UC</b-button>
         </v-row>
 
         <template v-else>
-          <template v-if="$vuetify.breakpoint.width > 800">
-            <v-row class="px-6 mx-6">
-              <center><h6 class="mt-2">Sugiere un nuevo nombre para esta plataforma!</h6></center>
+          <v-row
+          align="center"
+          justify="center"
+          class="px-6 mx-auto">
+             <center><h6 class="headline">Parte añadiendo una reseña!</h6></center>
+          </v-row>
+        <b-button block variant="success" @click="$store.commit('openReviewsForm')"><v-icon dark class="mr-2">mdi-plus-circle</v-icon>Crea una reseña!</b-button>
+        </template>
+      </v-sheet>
+    </v-carousel-item>
+
+    <v-carousel-item
+    v-if="$auth.loggedIn"
+    class="pa-6">
+      <v-sheet
+        color='teal lighten-2'
+        height="100%"
+      >
+
+      <template v-if="$vuetify.breakpoint.width > 800">
+            <v-row class="pa-6 mx-6">
+              <v-icon>mdi-emoticon-sad-outline</v-icon><center><h6 class="mt-2 headline">Esta plataforma todavía no cuenta con un nombre oficial</h6></center>
+            </v-row>
+            <v-row class="pa-6 mx-6">
+              <h6>Sugiere un nuevo nombre!</h6>
             </v-row>
 
             <v-row class="pb-6 mx-6">
@@ -61,34 +84,38 @@
             </v-row>
           </template>
 
-          <template v-else>
-            <v-row class="px-6 mx-6">
-              <center><h6 class="mt-2">Sugiere un nuevo nombre para esta plataforma!</h6></center>
-            </v-row>
+      <template v-else>
+        <v-row class="pa-6 mx-6">
+          <v-icon>mdi-emoticon-sad-outline</v-icon><center><h6 class="mt-2 headline">Esta plataforma todavía no cuenta con un nombre oficial,</h6></center>
+        </v-row>
+        <v-row class="pa-6 mx-6">
+          <center><h6 class="mt-2">Sugiere un nuevo nombre!</h6></center>
+        </v-row>
 
-            <v-row class="mx-2">
-              <v-col >
-                <v-text-field v-model="proposedName"
-                background-color="white"
-                autofocus
-                outlined
-                solo-inverted
-                dense
-                ></v-text-field>
-              </v-col>
-              <b-button
-              :disabled="proposedName == ''"
-              block
-              variant="primary"
-              class="mx-3"
-                :href="proposedNameUrl()"
-                target="_blank">
-                <v-icon dark >
-                  mdi-share
-                </v-icon> </b-button>
-            </v-row>
-          </template>
-        </template>
+        <v-row class="mx-2">
+          <v-col >
+            <v-text-field v-model="proposedName"
+            background-color="white"
+            autofocus
+            outlined
+            solo-inverted
+            dense
+            placeholder="sugerencia"
+            ></v-text-field>
+          </v-col>
+          <b-button
+          :disabled="proposedName == ''"
+          block
+          variant="primary"
+          class="mx-3"
+            :href="proposedNameUrl()"
+            target="_blank">
+            <v-icon dark >
+              mdi-share
+            </v-icon> </b-button>
+        </v-row>
+      </template>
+
       </v-sheet>
     </v-carousel-item>
 
@@ -215,7 +242,7 @@ export default {
       } else {
         return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Colaboración Reseñas PUC`
       }
-    }
+    },
   }
 }
 </script>

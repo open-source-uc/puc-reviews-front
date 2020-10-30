@@ -150,7 +150,7 @@ export async function setContext (app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {}
+      env: {"google_client_id":"http://localhost:3000"}
     }
     // Only set once
     if (!process.static && context.req) {

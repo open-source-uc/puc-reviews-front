@@ -61,7 +61,7 @@
             <template v-if="$auth.loggedIn">
             <b-nav-item>
               <button class="btn btn-success" @click="$store.commit('openReviewsForm')">
-                <v-icon dark>mdi-plus-circle</v-icon> Reseña
+                <v-icon dark>mdi-plus-circle</v-icon>Añade una reseña
               </button>
             </b-nav-item>
 
@@ -73,8 +73,16 @@
             </template>
           <!-- IF NOT LOGGED IN  -->
             <template v-else>
-              <b-nav-item><NuxtLink to="/sign_up"><button class="btn btn-success">Registrarse</button></NuxtLink></b-nav-item>
-            <b-nav-item><NuxtLink to="/login"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item>
+              <!-- <b-nav-item><NuxtLink to="/sign_up"><button class="btn btn-success">Registrarse</button></NuxtLink></b-nav-item>
+            <b-nav-item><NuxtLink to="/login"><button class="btn btn-primary">Iniciar Sesión</button></NuxtLink></b-nav-item> -->
+              <b-nav-item>
+                <b-button
+                class="ml-6"
+                variant="danger"
+                @click="$auth.loginWith('google')">
+                <v-icon>mdi-google</v-icon> Iniciar Sesión con mail UC
+                </b-button>
+              </b-nav-item>
             </template>
         </b-navbar-nav>
 

@@ -5,6 +5,7 @@ import './middleware'
 // Active schemes
 import scheme_003d9a64 from './schemes/local.js'
 import scheme_239b16e0 from './schemes/customLocalScheme.js'
+import scheme_23514a38 from './schemes/oauth2.js'
 
 export default function (ctx, inject) {
   // Options
@@ -19,6 +20,9 @@ export default function (ctx, inject) {
 
   // customLocalStrategy
   $auth.registerStrategy('customLocalStrategy', new scheme_239b16e0($auth, {"endpoints":{"login":{"url":"/api/v1/auth/sign_in","method":"post","propertyName":"access-token"},"logout":{"url":"/api/v1/auth/sign_out","method":"delete"},"user":{"url":"/api/v1/auth/validate_token","method":"get","propertyName":"data"}},"tokenRequired":true,"_name":"customLocalStrategy"}))
+
+  // google
+  $auth.registerStrategy('google', new scheme_23514a38($auth, {"client_id":"682162585296-hrpuv5n8pgh1rt3mmgq6e52vqhe8h9iq.apps.googleusercontent.com","_name":"google","authorization_endpoint":"https://accounts.google.com/o/oauth2/auth","userinfo_endpoint":"https://www.googleapis.com/oauth2/v3/userinfo","scope":["openid","profile","email"]}))
 
   // Inject it to nuxt context as $auth
   inject('auth', $auth)
