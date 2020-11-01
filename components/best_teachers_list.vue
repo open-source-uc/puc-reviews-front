@@ -1,5 +1,4 @@
 <template>
-<v-app>
   <v-card
   class="pa-2"
   style="text-align: center;"
@@ -21,6 +20,7 @@
       <v-carousel
       v-if="$vuetify.breakpoint.width > 500"
       height="420"
+      cycle
       >
       <v-sheet
         color="blue lighten-2">
@@ -33,6 +33,7 @@
             color="#385F73"
             dark
             class="mx-auto my-6"
+            elevation="22"
           >
             <div class="d-flex justify-space-between">
               <div>
@@ -129,8 +130,6 @@
     </v-row>
   </v-container>
   </v-card>
-</v-app>
-
 </template>
 
 <script>

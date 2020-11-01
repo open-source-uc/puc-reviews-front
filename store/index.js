@@ -5,6 +5,8 @@ export const state = () => ({
   requestedEntityInfo: false,
   showReviewForm: false,
   showProfile: false,
+  latestReviews: [],
+  lastReviewsRequested: false,
   loader: false,
   requiredField: [
     v => !!v || 'Campo requerido',
@@ -48,5 +50,11 @@ export const mutations = {
   },
   changeCurrentEntityType (state, value) {
     state.currentEntityType = value
+  },
+  changeLatestReviews(state, value) {
+    state.latestReviews = value
+  },
+  changeRequestedLatestReviews(state, value) {
+    state.lastReviewsRequested = value
   },
 }

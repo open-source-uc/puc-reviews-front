@@ -1,6 +1,6 @@
 <template>
   <v-carousel
-    :height="defineCarouselWidth()"
+    :height="defineCarouselHeight()"
     hide-delimiter-background
     show-arrows-on-hover
   >
@@ -78,7 +78,7 @@
                 :disabled="proposedName == ''"
                 variant="primary"
                 fab
-                :href="proposedNameUrl()"
+                :href="emailUrl('Nombre Reseñas PUC', proposedName)"
                 target="_blank"><v-icon>mdi-share</v-icon></b-button>
               </v-col>
             </v-row>
@@ -100,7 +100,7 @@
             outlined
             solo-inverted
             dense
-            placeholder="sugerencia"
+            placeholder="Sugerencia"
             ></v-text-field>
           </v-col>
           <b-button
@@ -108,7 +108,7 @@
           block
           variant="primary"
           class="mx-3"
-            :href="proposedNameUrl()"
+            :href="emailUrl('Nombre Reseñas PUC', proposedName)"
             target="_blank">
             <v-icon dark >
               mdi-share
@@ -178,7 +178,7 @@
                   fab
                   dark
                   color="light-blue accent-4"
-                  :href="colaborateEmailUrl()" target="_blank"
+                  :href="emailUrl('Colaboración Reseñas PUC', '')" target="_blank"
                 >
                   <v-icon dark>
                     mdi-email
@@ -204,6 +204,65 @@
 
       </v-sheet>
     </v-carousel-item>
+
+    <v-carousel-item
+    class="pa-6">
+      <v-sheet
+        color='light-blue accent-2'
+        height="100%"
+      >
+        <v-row
+          class="pa-6 mx-auto"
+          align="center"
+          justify="center"
+        >
+          <v-col class="pa-6" align="center">
+            <v-row>
+              <h6 class="display-1 mx-auto pb-6">¿Tienes alguna sugerencia?</h6>
+            </v-row>
+            <v-row class="pb-6 mx-6" v-if="!$vuetify.breakpoint.mobile">
+              <v-col cols="8">
+                <v-text-field v-model="feedback"
+                background-color="white"
+                autofocus
+                outlined
+                solo-inverted
+                dense
+                placeholder="Compartela!"></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <b-button
+                :disabled="feedback == ''"
+                variant="primary"
+                fab
+                :href="emailUrl('Sugerencias Reseñas PUC', feedback)"
+                target="_blank"><v-icon>mdi-share</v-icon></b-button>
+              </v-col>
+            </v-row>
+            <v-row class="pt-6" v-else>
+              <v-col cols="12">
+                <v-text-field v-model="feedback"
+                background-color="white"
+                autofocus
+                outlined
+                solo-inverted
+                dense
+                placeholder="Compartelas!"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <b-button
+                :disabled="feedback == ''"
+                variant="primary"
+                block
+                :href="emailUrl('Sugerencias Reseñas PUC', feedback)"
+                target="_blank"><v-icon>mdi-share</v-icon></b-button>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+
+      </v-sheet>
+    </v-carousel-item>
   </v-carousel>
 </template>
 
@@ -214,13 +273,14 @@ export default {
   data: function(){
     return{
       proposedName: "",
+      feedback: '',
       githubUrl: 'https://github.com/puc-reviews',
       whatsappUrl: `https://wa.me/?text=Mira%20esta%20página!%20${window.location.origin}`,
       facebookUrl: `https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`,
     }
   },
   methods: {
-    defineCarouselWidth() {
+    defineCarouselHeight() {
       if (this.$vuetify.breakpoint.width > 800) {
         return '425'
       } else if (this.$vuetify.breakpoint.width <= 800 && 600 < this.$vuetify.breakpoint.width) {
@@ -229,18 +289,11 @@ export default {
         return '650'
       }
     },
-    proposedNameUrl() {
+    emailUrl(subject, body) {
       if (this.$vuetify.breakpoint.mobile) {
-        return `mailto:aenrione@uc.cl?subject=Nombre%20Reseñas%20PUC&body=${this.proposedName}`
+        return `mailto:aenrione@uc.cl?subject=${subject}&body=${body}`
       } else {
-        return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Nombre Reseñas PUC&body=${this.proposedName}`
-      }
-    },
-    colaborateEmailUrl() {
-      if (this.$vuetify.breakpoint.mobile) {
-        return `mailto:aenrione@uc.cl?subject=Colaboración%20Reseñas%20PUC`
-      } else {
-        return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=Colaboración Reseñas PUC`
+        return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=aenrione@uc.cl&su=${subject}&body=${body}`
       }
     },
   }

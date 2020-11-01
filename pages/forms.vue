@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-row>
       <!-- Profesores -->
       <v-col>
@@ -25,7 +25,7 @@
         <teacher_course_form></teacher_course_form>
       </v-col>
     </v-row>
-  </v-app>
+  </div>
 </template>
 
 <script>

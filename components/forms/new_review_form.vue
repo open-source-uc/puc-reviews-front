@@ -1,329 +1,327 @@
 <template>
-  <v-app>
-    <v-card
-    :width="width"
-    class="mx-auto"
-    max-width="600"
-    max-height="400">
-      <v-tabs
-        v-model="tab"
-        class="bg-dark"
-        centered
-        dark
-        icons-and-text
+  <v-card
+  :width="width"
+  class="mx-auto"
+  max-width="600"
+  max-height="1000">
+    <v-tabs
+      v-model="tab"
+      class="bg-dark"
+      centered
+      dark
+      icons-and-text
+    >
+      <v-tabs-slider></v-tabs-slider>
+      <v-container class="d-flex justify-center" >
+      <v-tab to="#tab-1" class="mx-auto">
+        Profesor
+        <v-icon>mdi-human-greeting</v-icon>
+      </v-tab>
+
+      <v-tab to="#tab-2" class="mx-auto">
+        Ramo
+        <v-icon>mdi-pencil</v-icon>
+      </v-tab>
+
+      <v-btn color="red" class="ml-auto"
+      @click="$store.commit('closeReviewsForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      </v-container>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <!-- TAB 1 CONTENT-->
+      <v-tab-item
+        :key="1"
+        :value="'tab-' + 1"
+        class="pa-4"
       >
-        <v-tabs-slider></v-tabs-slider>
-        <v-container class="d-flex justify-center" >
-        <v-tab to="#tab-1" class="mx-auto">
-          Profesor
-          <v-icon>mdi-human-greeting</v-icon>
-        </v-tab>
+        <v-form v-model="valid">
+          <v-container>
 
-        <v-tab to="#tab-2" class="mx-auto">
-          Ramo
-          <v-icon>mdi-pencil</v-icon>
-        </v-tab>
+            <v-row>
+              <v-col>
+                <h5>Profesor
+                <v-progress-circular
+                v-if="$store.state.loader"
+                class="mx-auto"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+                </h5>
+                <v-autocomplete
+                :disabled="$store.state.loader"
+                v-model="teacherReviewInfo.teacher_id"
+                filled
+                solo
+                clearable
+                :search-input.sync="teacher_name_search"
+                :items="teachers"
+                item-value="id"
+                no-data-text="Nada que mostrar, introduzca algo"
+                item-text="name"
+                label="Nombre profesor"
+                @change="getTeacherCourses"
+                @keydown="updateTeachers(teacher_name_search)">
+                </v-autocomplete>
+              </v-col>
+            </v-row>
 
-        <v-btn color="red" class="ml-auto"
-        @click="$store.commit('closeReviewsForm')">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        </v-container>
-      </v-tabs>
+            <v-row>
+              <v-col>
+                <h5>Ramo que tomó con él
+                <v-progress-circular
+                v-if="$store.state.loader"
+                class="mx-auto"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+                </h5>
+                <v-autocomplete
+                :disabled="!teacherReviewInfo.teacher_id"
+                v-model="teacherReviewInfo.course_id"
+                clearable
+                filled
+                solo
+                no-data-text="Nada que mostrar, introduzca algo"
+                :items="teacher_courses"
+                item-value="id"
+                item-text="autocomplete_name"
+                :rules="requiredField"
+                :label="teacher_courses.length == 0 ? 'Seleccione un profesor' : 'Nombre o Sigla' ">
+                </v-autocomplete>
+              </v-col>
+            </v-row>
 
-      <v-tabs-items v-model="tab">
-        <!-- TAB 1 CONTENT-->
-        <v-tab-item
-          :key="1"
-          :value="'tab-' + 1"
-          class="pa-4"
-        >
-          <v-form v-model="valid">
-            <v-container>
+            <v-row>
+              <v-col>
+                <h5>Califica a este profesor:</h5>
+                <v-rating
+                v-model="teacherReviewInfo.rating"
+                style="text-align: center;"
+                half-increments
+                length="7"
+                hover
+                :size="$vuetify.breakpoint.xs ? '24':'32'"
+                required>
+                </v-rating>
+              </v-col>
+            </v-row>
 
-              <v-row>
-                <v-col>
-                  <h5>Profesor
-                  <v-progress-circular
-                  v-if="$store.state.loader"
-                  class="mx-auto"
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
-                  </h5>
-                  <v-autocomplete
-                  :disabled="$store.state.loader"
-                  v-model="teacherReviewInfo.teacher_id"
-                  filled
-                  solo
-                  clearable
-                  :search-input.sync="teacher_name_search"
-                  :items="teachers"
-                  item-value="id"
-                  no-data-text="Nada que mostrar, introduzca algo"
-                  item-text="name"
-                  label="Nombre profesor"
-                  @change="getTeacherCourses"
-                  @keydown="updateTeachers(teacher_name_search)">
-                  </v-autocomplete>
-                </v-col>
-              </v-row>
+            <v-row class="my-6 mx-auto" v-if="teacherReviewInfo.rating == 0">
+              <h6 class="red--text">Ingrese una nota valida!</h6>
+            </v-row>
 
-              <v-row>
-                <v-col>
-                  <h5>Ramo que tomó con él
-                  <v-progress-circular
-                  v-if="$store.state.loader"
-                  class="mx-auto"
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
-                  </h5>
-                  <v-autocomplete
-                  :disabled="!teacherReviewInfo.teacher_id"
-                  v-model="teacherReviewInfo.course_id"
-                  clearable
-                  filled
-                  solo
-                  no-data-text="Nada que mostrar, introduzca algo"
-                  :items="teacher_courses"
-                  item-value="id"
-                  item-text="autocomplete_name"
+            <v-row>
+              <v-col>
+                <v-textarea
+                  label="Comentario General"
+                  auto-grow
+                  rows="1"
+                  v-model="teacherReviewInfo.general_comment"
                   :rules="requiredField"
-                  :label="teacher_courses.length == 0 ? 'Seleccione un profesor' : 'Nombre o Sigla' ">
-                  </v-autocomplete>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <h5>Califica a este profesor:</h5>
-                  <v-rating
-                  v-model="teacherReviewInfo.rating"
-                  style="text-align: center;"
-                  half-increments
-                  length="7"
-                  hover
-                  :size="$vuetify.breakpoint.xs ? '24':'32'"
+                  counter="200"
                   required>
-                  </v-rating>
-                </v-col>
-              </v-row>
+                </v-textarea>
+              </v-col>
+            </v-row>
 
-              <v-row class="my-6 mx-auto" v-if="teacherReviewInfo.rating == 0">
-                <h6 class="red--text">Ingrese una nota valida!</h6>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    label="Comentario General"
-                    auto-grow
-                    rows="1"
-                    v-model="teacherReviewInfo.general_comment"
-                    :rules="requiredField"
-                    counter="200"
-                    required>
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    label="Áspectos positivas"
-                    auto-grow
-                    rows="1"
-                    counter="144"
-                    v-model="teacherReviewInfo.positive_comment"
-                    >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    label="Áspectos negativas"
-                    auto-grow
-                    rows="1"
-                    counter="144"
-                    v-model="teacherReviewInfo.negative_comment"
-                    >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row>
-              </v-row>
-
-              <v-row v-if="showAnonymous">
-                <v-col>
-                <v-checkbox
-                  v-model="teacherReviewInfo.anonymous"
-                  label="Esconder nombre?"
-                ></v-checkbox>
-                </v-col>
-                <v-col class="py-6" cols="8">
-                   <v-icon color="red"> mdi-exclamation-thick </v-icon><strong class="red--text body-1">Escribe siempre a partir del respeto</strong> 
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-btn
-                  :disabled="!valid || teacherReviewInfo.rating == 0 || $store.state.loader"
-                  class="mr-4"
-                  color="success"
-                  @click="createTeacherReview(teacherReviewInfo)"
+            <v-row>
+              <v-col>
+                <v-textarea
+                  label="Áspectos positivas"
+                  auto-grow
+                  rows="1"
+                  counter="144"
+                  v-model="teacherReviewInfo.positive_comment"
                   >
-                  Enviar
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-textarea
+                  label="Áspectos negativas"
+                  auto-grow
+                  rows="1"
+                  counter="144"
+                  v-model="teacherReviewInfo.negative_comment"
+                  >
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row>
+            </v-row>
+
+            <v-row v-if="showAnonymous">
+              <v-col>
+              <v-checkbox
+                v-model="teacherReviewInfo.anonymous"
+                label="Esconder nombre?"
+              ></v-checkbox>
+              </v-col>
+              <v-col class="py-6" cols="8">
+                  <v-icon color="red"> mdi-exclamation-thick </v-icon><strong class="red--text body-1">Escribe siempre a partir del respeto</strong> 
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-btn
+                :disabled="!valid || teacherReviewInfo.rating == 0 || $store.state.loader"
+                class="mr-4"
+                color="success"
+                @click="createTeacherReview(teacherReviewInfo)"
+                >
+                Enviar
+              </v-btn>
+              <v-btn
+              color="red"
+              @click="$store.commit('closeReviewsForm')">
+                Cerrar
+              </v-btn>
+              </v-col>
+              <v-col cols="2">
+                <v-btn icon @click="showAnonymous = !showAnonymous"><v-icon v-if="!showAnonymous">mdi-eye</v-icon><v-icon v-else>mdi-eye-off</v-icon></v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-tab-item>
+      <!-- TAB 2 CONTENT-->
+      <v-tab-item
+        :key="2"
+        :value="'tab-' + 2"
+        class="pa-4"
+      >
+        <v-form v-model="valid">
+          <v-container>
+            <v-row>
+              <v-col>
+                <h5>Ramo
+                  <v-progress-circular
+                  v-if="$store.state.loader"
+                  class="mx-auto"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+                </h5>
+                <v-autocomplete
+                :disabled="$store.state.loader"
+                v-model="courseReviewInfo.course_id"
+                filled
+                no-data-text="Nada que mostrar, introduzca algo"
+                solo
+                clearable
+                :search-input.sync="course_name_search"
+                :items="courses"
+                item-value="id"
+                item-text="autocomplete_name"
+                label="Nombre ramo"
+                @keydown="updateCourses(course_name_search)">
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <h5>Califica este ramo:</h5>
+                <v-rating
+                v-model="courseReviewInfo.rating"
+                style="text-align: center;"
+                half-increments
+                length="7"
+                hover
+                :size="$vuetify.breakpoint.xs ? '24':'32'"
+                required>
+                </v-rating>
+              </v-col>
+            </v-row>
+
+            <v-row class="my-6 mx-auto" v-if="courseReviewInfo.rating == 0">
+              <h6 class="red--text">Ingrese una nota valida!</h6>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-textarea
+                  auto-grow
+                  rows="1"
+                  v-model="courseReviewInfo.general_comment"
+                  :rules="requiredField"
+                  counter="200"
+                  label="Comentario General"
+                  required>
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-textarea
+                  auto-grow
+                  rows="1"
+                  v-model="courseReviewInfo.positive_comment"
+                  label="Áspectos positivas"
+                  counter="144"
+                  >
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-textarea
+                  auto-grow
+                  rows="1"
+                  v-model="courseReviewInfo.negative_comment"
+                  label="Áspectos negativas"
+                  counter="144"
+                  >
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row v-if="showAnonymous">
+              <v-col>
+              <v-checkbox
+                v-model="courseReviewInfo.anonymous"
+                label="Esconder nombre?"
+              ></v-checkbox>
+              </v-col>
+              <v-col class="py-6" cols="8">
+                  <v-icon color="red"> mdi-exclamation-thick </v-icon><strong class="red--text body-1">Escribe siempre a partir del respeto</strong> 
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col class="mt-6">
+                <v-btn
+                :disabled="!valid || courseReviewInfo.rating == 0 || $store.state.loader"
+                class="mr-4"
+                color="success"
+                @click="createCourseReview(courseReviewInfo)"
+                >
+                Enviar
                 </v-btn>
                 <v-btn
                 color="red"
                 @click="$store.commit('closeReviewsForm')">
                   Cerrar
                 </v-btn>
-                </v-col>
-                <v-col cols="2">
-                  <v-btn icon @click="showAnonymous = !showAnonymous"><v-icon v-if="!showAnonymous">mdi-eye</v-icon><v-icon v-else>mdi-eye-off</v-icon></v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-form>
-        </v-tab-item>
-        <!-- TAB 2 CONTENT-->
-        <v-tab-item
-          :key="2"
-          :value="'tab-' + 2"
-          class="pa-4"
-        >
-          <v-form v-model="valid">
-            <v-container>
-              <v-row>
-                <v-col>
-                  <h5>Ramo
-                    <v-progress-circular
-                    v-if="$store.state.loader"
-                    class="mx-auto"
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
-                  </h5>
-                  <v-autocomplete
-                  :disabled="$store.state.loader"
-                  v-model="courseReviewInfo.course_id"
-                  filled
-                  no-data-text="Nada que mostrar, introduzca algo"
-                  solo
-                  clearable
-                  :search-input.sync="course_name_search"
-                  :items="courses"
-                  item-value="id"
-                  item-text="autocomplete_name"
-                  label="Nombre ramo"
-                  @keydown="updateCourses(course_name_search)">
-                  </v-autocomplete>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <h5>Califica este ramo:</h5>
-                  <v-rating
-                  v-model="courseReviewInfo.rating"
-                  style="text-align: center;"
-                  half-increments
-                  length="7"
-                  hover
-                  :size="$vuetify.breakpoint.xs ? '24':'32'"
-                  required>
-                  </v-rating>
-                </v-col>
-              </v-row>
-
-              <v-row class="my-6 mx-auto" v-if="courseReviewInfo.rating == 0">
-                <h6 class="red--text">Ingrese una nota valida!</h6>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    auto-grow
-                    rows="1"
-                    v-model="courseReviewInfo.general_comment"
-                    :rules="requiredField"
-                    counter="200"
-                    label="Comentario General"
-                    required>
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    auto-grow
-                    rows="1"
-                    v-model="courseReviewInfo.positive_comment"
-                    label="Áspectos positivas"
-                    counter="144"
-                    >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    auto-grow
-                    rows="1"
-                    v-model="courseReviewInfo.negative_comment"
-                    label="Áspectos negativas"
-                    counter="144"
-                    >
-                  </v-textarea>
-                </v-col>
-              </v-row>
-
-              <v-row v-if="showAnonymous">
-                <v-col>
-                <v-checkbox
-                  v-model="courseReviewInfo.anonymous"
-                  label="Esconder nombre?"
-                ></v-checkbox>
-                </v-col>
-                <v-col class="py-6" cols="8">
-                   <v-icon color="red"> mdi-exclamation-thick </v-icon><strong class="red--text body-1">Escribe siempre a partir del respeto</strong> 
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col class="mt-6">
-                  <v-btn
-                  :disabled="!valid || courseReviewInfo.rating == 0 || $store.state.loader"
-                  class="mr-4"
-                  color="success"
-                  @click="createCourseReview(courseReviewInfo)"
-                  >
-                  Enviar
-                  </v-btn>
-                  <v-btn
-                  color="red"
-                  @click="$store.commit('closeReviewsForm')">
-                    Cerrar
-                  </v-btn>
-                </v-col>
-                <v-col cols="2">
-                  <v-btn icon @click="showAnonymous = !showAnonymous"><v-icon v-if="!showAnonymous">mdi-eye</v-icon><v-icon v-else>mdi-eye-off</v-icon></v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-form>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card>
-  </v-app>
+              </v-col>
+              <v-col cols="2">
+                <v-btn icon @click="showAnonymous = !showAnonymous"><v-icon v-if="!showAnonymous">mdi-eye</v-icon><v-icon v-else>mdi-eye-off</v-icon></v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-card>
 </template>
 
 <script>

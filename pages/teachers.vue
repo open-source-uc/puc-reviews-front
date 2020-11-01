@@ -26,7 +26,7 @@
         <v-text-field
           clearable
           v-model="searchParams.teacher_name"
-          placeholder="nombre"
+          placeholder="Nombre"
         ></v-text-field>
       </v-col>
       <v-col>
