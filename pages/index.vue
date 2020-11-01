@@ -68,6 +68,7 @@ export default {
         this.$store.commit('changeRequestedLatestReviews', true)
       },
     async getBestTeachers() {
+        this.bestTeachersRequested = false
         const response = await this.$axios.get(`/api/v1/best_teachers`)
         const items = response.data
         this.best_teachers = items

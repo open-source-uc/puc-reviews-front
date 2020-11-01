@@ -15,7 +15,14 @@
     {{title}}
   </v-chip>
   <v-container>
-    <v-row v-if="teachers.length != 0" dense
+    <v-row v-if='!requested'>
+      <v-progress-circular
+        class="mx-auto"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-row>
+    <v-row v-else-if="teachers.length != 0" dense
     style="text-align: left;">
       <v-carousel
       v-if="$vuetify.breakpoint.width > 500"
