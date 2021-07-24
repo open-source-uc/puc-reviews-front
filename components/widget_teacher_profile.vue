@@ -38,14 +38,17 @@
               <h6><v-icon>mdi-email</v-icon> {{ teacher.email }}</h6>
           </v-row>
           <v-row>
-              <h6><v-icon>mdi-notebook</v-icon> Ramos</h6>
+              <h6><v-icon>mdi-notebook</v-icon>Ramos</h6>
             <b-table
             :items="teacher.courses"
             :fields="coursesFields"
+						ref="table"
+            id="courses-table"
             show-empty
             responsive
-            ref="table"
-            id="courses-table">
+						:per-page="perPage"
+          	:current-page="currentPage"	
+            >
             <template v-slot:cell(show_profile)="row">
               <b-button size="sm" @click="openProfile(row.item.id)" class="mr-2" variant="primary">
                 Mostrar
@@ -144,7 +147,11 @@ export default {
   },
   computed: {
       rows() {
-        return this.teacher.courses.length
+				
+				if (this.teacher.courses){
+          return this.teacher.courses.length
+        }
+				return 0
       }
   },
   props: {

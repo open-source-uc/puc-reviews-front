@@ -6,6 +6,7 @@
     </v-card>
     <Snackbar></Snackbar>
     <toTop></toTop>
+		<mainFooter></mainFooter>
   </v-app>
 </template>
 
@@ -14,13 +15,15 @@ import navbar from "@/components/navbar.vue"
 import axios from 'axios'
 import Snackbar from '~/components/Snackbar.vue'
 import toTop from "~/components/toTop.vue"
+import mainFooter from "@/components/footer.vue"
 
 
 export default {
   components: {
     navbar,
     Snackbar,
-    toTop
+    toTop,
+		mainFooter
   },
   data: function(){
     return{

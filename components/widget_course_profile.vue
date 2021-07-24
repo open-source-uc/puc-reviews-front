@@ -149,6 +149,7 @@ export default {
         if (this.course.teachers){
           return this.course.teachers.length
         }
+				return 0
       }
   },
   props: {

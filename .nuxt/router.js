@@ -3,12 +3,12 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _03e2a81a = () => interopDefault(import('../pages/courses.vue' /* webpackChunkName: "pages/courses" */))
-const _d773e4ac = () => interopDefault(import('../pages/forms.vue' /* webpackChunkName: "pages/forms" */))
-const _7e3b7838 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
-const _5ef5e3d0 = () => interopDefault(import('../pages/sign_up.vue' /* webpackChunkName: "pages/sign_up" */))
-const _3b2e55a6 = () => interopDefault(import('../pages/teachers.vue' /* webpackChunkName: "pages/teachers" */))
-const _118abe66 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _0e8e224a = () => interopDefault(import('../pages/courses.vue' /* webpackChunkName: "pages/courses" */))
+const _fa182adc = () => interopDefault(import('../pages/forms.vue' /* webpackChunkName: "pages/forms" */))
+const _a0dfbe68 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _69a15e00 = () => interopDefault(import('../pages/sign_up.vue' /* webpackChunkName: "pages/sign_up" */))
+const _d4672084 = () => interopDefault(import('../pages/teachers.vue' /* webpackChunkName: "pages/teachers" */))
+const _342f0496 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -28,27 +28,27 @@ export const routerOptions = {
 
   routes: [{
     path: "/courses",
-    component: _03e2a81a,
+    component: _0e8e224a,
     name: "courses"
   }, {
     path: "/forms",
-    component: _d773e4ac,
+    component: _fa182adc,
     name: "forms"
   }, {
     path: "/login",
-    component: _7e3b7838,
+    component: _a0dfbe68,
     name: "login"
   }, {
     path: "/sign_up",
-    component: _5ef5e3d0,
+    component: _69a15e00,
     name: "sign_up"
   }, {
     path: "/teachers",
-    component: _3b2e55a6,
+    component: _d4672084,
     name: "teachers"
   }, {
     path: "/",
-    component: _118abe66,
+    component: _342f0496,
     name: "index"
   }],
 

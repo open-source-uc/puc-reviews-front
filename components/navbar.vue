@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand to="/"><v-icon color="white">mdi-star-circle </v-icon>INICIO</b-navbar-brand>
+      <b-navbar-brand to="/"><h1 class="mb-0">Reseñas <span class="text-primary">PUC</span></h1></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
