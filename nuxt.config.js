@@ -25,7 +25,8 @@ export default {
   buildModules: [
       '@nuxtjs/vuetify',
       '@nuxtjs/auth',
-      '@nuxtjs/axios'
+      '@nuxtjs/axios',
+			'@nuxtjs/dotenv'
     ],
     auth: {
       strategies: {
@@ -39,7 +40,7 @@ export default {
           tokenRequired: true,
         },
         google: {
-        client_id: process.env.GOOGLE_CLIENT_ID || '682162585296-hrpuv5n8pgh1rt3mmgq6e52vqhe8h9iq.apps.googleusercontent.com'
+        client_id: process.env.GOOGLE_CLIENT_ID
        },
       }
     },
